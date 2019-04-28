@@ -1,0 +1,80 @@
+
+
+ul#menu {
+    position: fixed;
+    margin: 0px;
+    padding: 0px;
+    top: 0px;
+    left: 15%;
+    list-style: none;
+    z-index:999999;
+}
+ul#menu li {
+    display:inline;
+    float:left;
+    width:100px;
+    margin-left:1px;
+}
+ul#menu li a {
+    display: block;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #fff;
+    float: left;
+    width: 100px;
+    height: 35px;
+    color: #603d05;
+    background-size: 100% 100%;
+    text-decoration:none;
+    text-align: center;
+    padding-top: 80px;
+    margin-top: -40px;
+    cursor: pointer;
+}
+
+#welcome_ghost {
+    background: transparent url(ghost_welcome.png) no-repeat bottom right;
+}
+
+#register_ghost {
+    background: transparent url(ghost_register.png) no-repeat bottom right;
+}
+
+#login_ghost {
+    background: transparent url(ghost_login.png) no-repeat bottom right;
+}
+
+#about_ghost {
+    background: transparent url(ghost_about.png) no-repeat bottom right;
+}
+
+#welcome {
+    width: 100%;
+    height: calc(100vw * 0.625);
+    background-image: url("pixels_pacman_logo.jpg");
+    background-size: 100% 100%;
+}
+
+#welcome Button {
+    position: absolute;
+    display: block;
+    width: 270px;
+    height: 95px;
+    background-size: 270px 95px;
+    margin-left: 12%;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: auto;
+}
+
+#register_from_welcome {
+    margin-top: 18%;
+    background-image: url("register_icon.png");
+}
+
+#login_from_welcome {
+    margin-top: 35%;
+    background-image: url("login_icon.png");
+}
+.basic_background{
+    background-image: url("divs_background.jpg");
+    background-size: 100% 100%;
+}

@@ -1,180 +1,389 @@
 <!DOCTYPE html>
 <html>
 
-<head></head>
+<head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script type="text/javascript" src=menu_script.js></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
 
-<body>SCORE:
-<input id="lblScore" type="text"/>
-<br/>
-TIME:
-<input id="lblTime" type="text"/>
-<br/>
-<canvas id="canvas" height="600" width="600"></canvas>
+    <!-- Title Page-->
+    <title>Au Register Forms by Colorlib</title>
+
+    <!-- Icons font CSS-->
+    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="main.css" rel="stylesheet" media="all">
+</head>
+
+<body>
+    <ul id="menu">
+        <li><a id="welcome_ghost" onclick="show_welcome()"></a></li>
+        <li><a id="register_ghost" onclick="show_register()"></a></li>
+        <li><a id="login_ghost" onclick="show_login()"></a></li>
+        <li><a id="about_ghost" onclick="show_about()"></a></li>
+    </ul>
+    <div id="welcome">
+        <Button id="register_from_welcome">
+        </Button>
+        <Button id="login_from_welcome">
+        </Button>
+    </div>
+    <div id="Game">
+        SCORE:
+        <input id="lblScore" type="text" />
+        <br />
+        TIME:
+        <input id="lblTime" type="text" />
+        <br />
+        <canvas id="canvas" height="600" width="600">
+        </canvas>
+    </div>
+    <div class="basic_background" id="login">
+        login
+    </div>
+    <div class="basic_background" id="register">
+            <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+                    <div class="wrapper wrapper--w680">
+                        <div class="card card-1">
+                            <div class="card-heading"></div>
+                            <div class="card-body">
+                                <h2 class="title">Registration Info</h2>
+                                <form method="POST">
+                                    <div class="input-group">
+                                        <input class="input--style-1" type="text" placeholder="NAME" name="name">
+                                    </div>
+                                    <div class="row row-space">
+                                        <div class="col-2">
+                                            <div class="input-group">
+                                                <input class="input--style-1 js-datepicker" type="text" placeholder="BIRTHDATE" name="birthday">
+                                                <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="input-group">
+                                                <div class="rs-select2 js-select-simple select--no-search">
+                                                    <select name="gender">
+                                                        <option disabled="disabled" selected="selected">GENDER</option>
+                                                        <option>Male</option>
+                                                        <option>Female</option>
+                                                        <option>Other</option>
+                                                    </select>
+                                                    <div class="select-dropdown"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="rs-select2 js-select-simple select--no-search">
+                                            <select name="class">
+                                                <option disabled="disabled" selected="selected">CLASS</option>
+                                                <option>Class 1</option>
+                                                <option>Class 2</option>
+                                                <option>Class 3</option>
+                                            </select>
+                                            <div class="select-dropdown"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row row-space">
+                                        <div class="col-2">
+                                            <div class="input-group">
+                                                <input class="input--style-1" type="text" placeholder="REGISTRATION CODE" name="res_code">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="p-t-20">
+                                        <button class="btn btn--radius btn--green" type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Jquery JS-->
+                <script src="vendor/jquery/jquery.min.js"></script>
+                <!-- Vendor JS-->
+                <script src="vendor/select2/select2.min.js"></script>
+                <script src="vendor/datepicker/moment.min.js"></script>
+                <script src="vendor/datepicker/daterangepicker.js"></script>
+            
+                <!-- Main JS-->
+                <script src="global.js"></script>
+    </div>
+    <div class="basic_background" id="settings">
+        settings
+    </div>
+    <script type="text/javascript">
+        var currently_shown;
+        initialize_show();
 
 
-<script type="text/javascript">
-    var context = canvas.getContext("2d");
-    var shape = new Object();
-    var board;
-    var score;
-    var pac_color;
-    var start_time;
-    var time_elapsed;
-    var interval;
 
-    Start();
+        function initialize_show() {
+            currently_shown = document.getElementById("welcome");
+            currently_shown.style.display = "block";
+            display_none("Game");
+            display_none("login");
+            display_none("register");
+            display_none("settings");
+        }
 
-    function Start() {
-        board = new Array();
-        score = 0;
-        pac_color = "yellow";
-        var cnt = 100;
-        var food_remain = 50;
-        var pacman_remain = 1;
-        start_time = new Date();
-        for (var i = 0; i < 10; i++) {
-            board[i] = new Array();
-            //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
-            for (var j = 0; j < 10; j++) {
-                if ((i === 3 && j === 3) || (i === 3 && j === 4) || (i === 3 && j === 5) || (i === 6 && j === 1) || (i === 6 && j === 2)) {
-                    board[i][j] = 4;
-                } else {
-                    var randomNum = Math.random();
-                    if (randomNum <= 1.0 * food_remain / cnt) {
-                        food_remain--;
-                        board[i][j] = 1;
-                    } else if (randomNum < 1.0 * (pacman_remain + food_remain) / cnt) {
-                        shape.i = i;
-                        shape.j = j;
-                        pacman_remain--;
-                        board[i][j] = 2;
+        function display_none(str) {
+            var curr = document.getElementById(str);
+            curr.style = "display: none";
+        }
+        function show_welcome() {
+            show("welcome")
+        }
+        function show_register() {
+            show("register")
+        }
+
+        function show_login() {
+            show("login")
+        }
+        function show_game() {
+            show("Game")
+        }
+        function show_settings() {
+            show("settings")
+        }
+
+        function show(str) {
+            currently_shown.style = "display: none";
+            currently_shown = document.getElementById(str);
+            currently_shown.style = "display: block";
+        }
+    </script>
+
+    <script type="text/javascript">
+        var context = canvas.getContext("2d");
+        var shape = new Object();
+        var board;
+        var score;
+        var pac_color;
+        var start_time;
+        var time_remaining;
+        var interval;
+        var lastPressed;
+        var game_time = 120;
+        var mouth_diff;
+        var mount_openning;
+        var interval_mouth_openning;
+
+        Start();
+        function Start() {
+            //Game.style.display = 'none';
+            board = new Array();
+            score = 0;
+            pac_color = "yellow";
+            mouth_diff = 0.15;
+            mount_openning = false;
+            var cnt = 100;
+            var food_remain = 50;
+            var pacman_remain = 1;
+            start_time = new Date();
+            for (var i = 0; i < 10; i++) {
+                board[i] = new Array();
+                //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
+                for (var j = 0; j < 10; j++) {
+                    if ((i === 3 && j === 3) || (i === 3 && j === 4) || (i === 3 && j === 5) || (i === 6 && j === 1) || (i === 6 && j === 2)) {
+                        board[i][j] = 4;
                     } else {
-                        board[i][j] = 0;
+                        var randomNum = Math.random();
+                        if (randomNum <= 1.0 * food_remain / cnt) {
+                            food_remain--;
+                            board[i][j] = 1;
+                        } else if (randomNum < 1.0 * (pacman_remain + food_remain) / cnt) {
+                            shape.i = i;
+                            shape.j = j;
+                            pacman_remain--;
+                            board[i][j] = 2;
+                        } else {
+                            board[i][j] = 0;
+                        }
+                        cnt--;
                     }
-                    cnt--;
                 }
             }
+            while (food_remain > 0) {
+                var emptyCell = findRandomEmptyCell(board);
+                board[emptyCell[0]][emptyCell[1]] = 1;
+                food_remain--;
+            }
+            keysDown = {};
+            addEventListener("keydown", function (e) {
+                keysDown[e.code] = true;
+            }, false);
+            addEventListener("keyup", function (e) {
+                keysDown[e.code] = false;
+            }, false);
+            intervalKeyPressed = setInterval(GetKeyPressed, 10);
+            interval = setInterval(UpdatePosition, 150);
+            interval_mouth_openning = setInterval(ChangeMouth, 20);
         }
-        while (food_remain > 0) {
-            var emptyCell = findRandomEmptyCell(board);
-            board[emptyCell[0]][emptyCell[1]] = 1;
-            food_remain--;
-        }
-        keysDown = {};
-        addEventListener("keydown", function (e) {
-            keysDown[e.code] = true;
-        }, false);
-        addEventListener("keyup", function (e) {
-            keysDown[e.code] = false;
-        }, false);
-        interval = setInterval(UpdatePosition, 250);
-    }
 
 
-    function findRandomEmptyCell(board) {
-        var i = Math.floor((Math.random() * 9) + 1);
-        var j = Math.floor((Math.random() * 9) + 1);
-        while (board[i][j] !== 0) {
-            i = Math.floor((Math.random() * 9) + 1);
-            j = Math.floor((Math.random() * 9) + 1);
+        function findRandomEmptyCell(board) {
+            var i = Math.floor((Math.random() * 9) + 1);
+            var j = Math.floor((Math.random() * 9) + 1);
+            while (board[i][j] !== 0) {
+                i = Math.floor((Math.random() * 9) + 1);
+                j = Math.floor((Math.random() * 9) + 1);
+            }
+            return [i, j];
         }
-        return [i, j];
-    }
 
-    /**
-     * @return {number}
-     */
-    function GetKeyPressed() {
-        if (keysDown['ArrowUp']) {
-            return 1;
+        function ChangeMouth() {
+            if (mount_openning) {
+                if (mouth_diff >= 0.14)
+                    mount_openning = false;
+                mouth_diff = mouth_diff + 0.01;
+            }
+            else {
+                if (mouth_diff <= 0.02)
+                    mount_openning = true;
+                mouth_diff = mouth_diff - 0.01;
+            }
         }
-        if (keysDown['ArrowDown']) {
-            return 2;
-        }
-        if (keysDown['ArrowLeft']) {
-            return 3;
-        }
-        if (keysDown['ArrowRight']) {
-            return 4;
-        }
-    }
 
-    function Draw() {
-        context.clearRect(0, 0, canvas.width, canvas.height); //clean board
-        lblScore.value = score;
-        lblTime.value = time_elapsed;
-        for (var i = 0; i < 10; i++) {
-            for (var j = 0; j < 10; j++) {
-                var center = new Object();
-                center.x = i * 60 + 30;
-                center.y = j * 60 + 30;
-                if (board[i][j] === 2) {
-                    context.beginPath();
-                    context.arc(center.x, center.y, 30, 0.15 * Math.PI, 1.85 * Math.PI); // half circle
-                    context.lineTo(center.x, center.y);
-                    context.fillStyle = pac_color; //color
-                    context.fill();
-                    context.beginPath();
-                    context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI); // circle
-                    context.fillStyle = "black"; //color
-                    context.fill();
-                } else if (board[i][j] === 1) {
-                    context.beginPath();
-                    context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
-                    context.fillStyle = "black"; //color
-                    context.fill();
-                } else if (board[i][j] === 4) {
-                    context.beginPath();
-                    context.rect(center.x - 30, center.y - 30, 60, 60);
-                    context.fillStyle = "grey"; //color
-                    context.fill();
+
+        /**
+         * @return {number}
+         */
+        function GetKeyPressed() {
+            if (keysDown['ArrowUp']) {
+                lastPressed = 1;
+            }
+            if (keysDown['ArrowDown']) {
+                lastPressed = 2;
+            }
+            if (keysDown['ArrowLeft']) {
+                lastPressed = 3;
+            }
+            if (keysDown['ArrowRight']) {
+                lastPressed = 4;
+            }
+        }
+
+        function Draw() {
+            context.clearRect(0, 0, canvas.width, canvas.height); //clean board
+            lblScore.value = score + " Points";
+            lblTime.value = time_remaining + " Seconds";
+            for (var i = 0; i < 10; i++) {
+                for (var j = 0; j < 10; j++) {
+                    var center = new Object();
+                    center.x = i * 60 + 30;
+                    center.y = j * 60 + 30;
+                    if (board[i][j] === 2) {
+                        context.beginPath();
+                        var eye_x;
+                        var eye_y;
+                        var mouth_loc;
+
+                        switch (lastPressed) {
+                            case 1:
+                                eye_x = -15;
+                                eye_y = -5;
+                                mouth_loc = 1.5;
+                                break;
+                            case 2:
+                                eye_x = -15;
+                                eye_y = +5;
+                                mouth_loc = 0.5;
+                                break;
+                            case 3:
+                                eye_x = -5;
+                                eye_y = -15;
+                                mouth_loc = 1;
+                                break;
+                            case 4:
+                                eye_x = +5;
+                                eye_y = -15;
+                                mouth_loc = 0;
+                                break;
+
+                        }
+                        context.arc(center.x, center.y, 30, (mouth_loc + mouth_diff) * Math.PI, (mouth_loc - mouth_diff) * Math.PI); // half circle
+                        context.lineTo(center.x, center.y);
+                        context.fillStyle = pac_color; //color
+                        context.fill();
+                        context.beginPath();
+                        context.arc(center.x + eye_x, center.y + eye_y, 5, 0, 2 * Math.PI); // circle
+                        context.fillStyle = "black"; //color
+                        context.fill();
+                    } else if (board[i][j] === 1) {
+                        context.beginPath();
+                        context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
+                        context.fillStyle = "black"; //color
+                        context.fill();
+                    } else if (board[i][j] === 4) {
+                        context.beginPath();
+                        context.rect(center.x - 30, center.y - 30, 60, 60);
+                        context.fillStyle = "grey"; //color
+                        context.fill();
+                    }
                 }
             }
-        }
 
 
-    }
+        }
 
-    function UpdatePosition() {
-        board[shape.i][shape.j] = 0;
-        var x = GetKeyPressed();
-        if (x === 1) {
-            if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4) {
-                shape.j--;
+        function UpdatePosition() {
+            board[shape.i][shape.j] = 0;
+            //var x = GetKeyPressed();
+            var x = lastPressed;
+            if (x === 1) {
+                if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4) {
+                    shape.j--;
+                }
+            }
+            if (x === 2) {
+                if (shape.j < 9 && board[shape.i][shape.j + 1] !== 4) {
+                    shape.j++;
+                }
+            }
+            if (x === 3) {
+                if (shape.i > 0 && board[shape.i - 1][shape.j] !== 4) {
+                    shape.i--;
+                }
+            }
+            if (x === 4) {
+                if (shape.i < 9 && board[shape.i + 1][shape.j] !== 4) {
+                    shape.i++;
+                }
+            }
+            if (board[shape.i][shape.j] === 1) {
+                score++;
+            }
+            board[shape.i][shape.j] = 2;
+            var currentTime = new Date();
+            time_remaining = Math.round(((start_time - currentTime) + game_time * 1000) / 1000);
+            if (score >= 20 && time_remaining <= 10) {
+                pac_color = "green";
+            }
+            if (score === 50) {
+                window.clearInterval(interval);
+                window.alert("Game completed");
+            } else {
+                Draw();
             }
         }
-        if (x === 2) {
-            if (shape.j < 9 && board[shape.i][shape.j + 1] !== 4) {
-                shape.j++;
-            }
-        }
-        if (x === 3) {
-            if (shape.i > 0 && board[shape.i - 1][shape.j] !== 4) {
-                shape.i--;
-            }
-        }
-        if (x === 4) {
-            if (shape.i < 9 && board[shape.i + 1][shape.j] !== 4) {
-                shape.i++;
-            }
-        }
-        if (board[shape.i][shape.j] === 1) {
-            score++;
-        }
-        board[shape.i][shape.j] = 2;
-        var currentTime = new Date();
-        time_elapsed = (currentTime - start_time) / 1000;
-        if (score >= 20 && time_elapsed <= 10) {
-            pac_color = "green";
-        }
-        if (score === 50) {
-            window.clearInterval(interval);
-            window.alert("Game completed");
-        } else {
-            Draw();
-        }
-    }
-</script>
+    </script>
 </body>
 
 </html>
