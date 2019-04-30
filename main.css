@@ -276,6 +276,11 @@ input {
   margin-bottom: 30px;
   border-bottom: 2px solid #ccc;
 }
+.input-type {
+  padding-right: 5%;
+  position: relative;
+  margin-bottom: 30px;
+}
 
 .input-icon {
   position: absolute;

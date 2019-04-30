@@ -1,7 +1,6 @@
 var context;
-document.addEventListener('DOMContentLoaded', function(event) {
+document.addEventListener('DOMContentLoaded', function (event) {
     context = canvas.getContext("2d");
-    Start();
 });
 var shape = new Object();
 var board;
@@ -10,23 +9,32 @@ var pac_color;
 var start_time;
 var time_remaining;
 var interval;
-var lastPressed=0;
-var look_direction=4;
-var game_time = 120;
+var intervalKeyPressed;
+var lastPressed;
+var look_direction;
+var game_time;
 var mouth_diff;
 var mount_openning;
 var interval_mouth_openning;
+var key_up;
+var key_down;
+var key_left;
+var key_right;
+var snacks_amount;
+var monsters_num;
 
 
 function Start() {
     //Game.style.display = 'none';
+    lastPressed = 0;
+    look_direction = 4
     board = new Array();
     score = 0;
     pac_color = "yellow";
     mouth_diff = 0.15;
     mount_openning = false;
     var cnt = 100;
-    var food_remain = 50;
+    var food_remain = snacks_amount;
     var pacman_remain = 1;
     start_time = new Date();
     for (var i = 0; i < 10; i++) {
@@ -80,10 +88,6 @@ function findRandomEmptyCell(board) {
     return [i, j];
 }
 
-function set_settings() {
-    show_game();
-}
-
 function ChangeMouth() {
     if (mount_openning) {
         if (mouth_diff >= 0.14)
@@ -97,25 +101,37 @@ function ChangeMouth() {
     }
 }
 
+function set_settings(setting_up, setting_down, setting_left, setting_right, setting_snacks, setting_time, setting_monsters_num) {
+    key_up = setting_up.value;
+    key_down = setting_down.value;
+    key_left = setting_left.value;
+    key_right = setting_right.value;
+    game_time = setting_time.value;
+    snacks_amount = setting_snacks.value;
+    monsters_num = setting_monsters_num.value;
+    show_game();
+    Start();
+}
+
 
 /**
  * @return {number}
  */
 function GetKeyPressed() {
-    if (keysDown['KeyW']) {
+    if (keysDown[key_up]) {
         lastPressed = 1;
     }
-    if (keysDown['KeyS']) {
+    if (keysDown[key_down]) {
         lastPressed = 2;
     }
-    if (keysDown['KeyA']) {
+    if (keysDown[key_left]) {
         lastPressed = 3;
     }
-    if (keysDown['KeyD']) {
+    if (keysDown[key_right]) {
         lastPressed = 4;
     }
-    if(lastPressed!=0){
-        look_direction=lastPressed;
+    if (lastPressed != 0) {
+        look_direction = lastPressed;
     }
 }
 
@@ -129,7 +145,7 @@ function Draw() {
             center.x = i * 60 + 30;
             center.y = j * 60 + 30;
             if (board[i][j] === 2) {
-                Draw_Pacman(look_direction,center);
+                Draw_Pacman(look_direction, center);
             } else if (board[i][j] === 1) {
                 context.beginPath();
                 context.arc(center.x, center.y, 15, 0, 2 * Math.PI); // circle
@@ -147,7 +163,7 @@ function Draw() {
 
 }
 
-function Draw_Pacman(direction,center){
+function Draw_Pacman(direction, center) {
     context.beginPath();
     var eye_x;
     var eye_y;
@@ -188,7 +204,6 @@ function Draw_Pacman(direction,center){
 
 function UpdatePosition() {
     board[shape.i][shape.j] = 0;
-    //var x = GetKeyPressed();
     var x = lastPressed;
     if (x === 1) {
         if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4) {
@@ -220,8 +235,12 @@ function UpdatePosition() {
         pac_color = "green";
     }
     Draw();
-    if (score === 50) {
+    if (score === Number(snacks_amount)) {
         window.clearInterval(interval);
-        window.alert("Game completed");
+        window.clearInterval(intervalKeyPressed);
+        window.clearInterval(interval_mouth_openning);
+        var time_spent = game_time - time_remaining;
+        window.alert("Game completed after " + time_spent + " seconds with " + score + " points!");
+        Start();
     }
 }

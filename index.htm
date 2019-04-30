@@ -39,6 +39,7 @@
     <script src="game.js"></script>
     <script src="div_show.js"></script>
     <script src="users.js"></script>
+    <script src="settings.js"></script>
 
 </head>
 
@@ -72,7 +73,7 @@
                     <div class="card-heading"></div>
                     <div class="card-body">
                         <h2 class="title">Login</h2>
-                        <form id="register_form" method="POST">
+                        <form id="login_form" method="POST">
                             <div class="input-group">
                                 <input class="input--style-1" type="text" placeholder="Username" name="login_username">
                             </div>
@@ -81,7 +82,8 @@
                                     name="login_password">
                             </div>
                             <div class="p-t-20">
-                                <button class="btn btn--radius btn--green" type="button" onclick="check_login(login_username,login_password)">login!</button>
+                                <button class="btn btn--radius btn--green" type="button"
+                                    onclick="check_login(login_username,login_password)">login!</button>
                             </div>
                         </form>
                     </div>
@@ -153,46 +155,142 @@
                     <div class="card-heading"></div>
                     <div class="card-body">
                         <h2 class="title">Settings</h2>
-                        <form id="register_form" method="GET">
-                            <div class="input-group">
-                                <input class="input--style-1" type="text" placeholder="Username" name="username">
-                            </div>
-                            <div class="input-group">
-                                <input class="input--style-1" type="password" placeholder="Password" name="password">
-                            </div>
-                            <div class="row row-space">
-                                <div class="input-group">
-                                    <input class="input--style-1" type="text" placeholder="First Name"
-                                        name="first_name">
-                                </div>
-                                <div class="input-group">
-                                    <input class="input--style-1" type="text" placeholder="Last Name" name="last_name">
-                                </div>
-                            </div>
-                            <div class="row row-space">
-                                <div class="col-2">
-                                    <div class="input-group">
-                                        <input class="input--style-1" type="text" placeholder="Email" name="email">
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <div class="input-group">
-                                        <input class="input--style-1 js-datepicker" type="text" placeholder="BIRTHDATE"
-                                            name="birthday">
-                                        <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
-                                    </div>
-                                </div>
+                        <form id="settings_form" method="GET">
+                            <table style="width:100%;height:100%;">
+                                <tr>
+                                    <td>
+                                        <div class="input-type">
+                                            <h5>Control for moving up:</h5>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input id="setting_up" class="input--style-1" type="text"
+                                                placeholder="Enter key" name="setting_up" onkeydown="submitControl()">
+                                        </div>
+
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-type">
+                                            <h5>Control for moving down:</h5>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input id="setting_down" class="input--style-1" type="text"
+                                                placeholder="Enter key" name="setting_down" onkeydown="submitControl()">
+                                        </div>
+
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-type">
+                                            <h5>Control for moving left:</h5>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input id="setting_left" class="input--style-1" type="text"
+                                                placeholder="Enter key" name="setting_left" onkeydown="submitControl()">
+                                        </div>
+
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-type">
+                                            <h5>Control for moving right:</h5>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input id="setting_right" class="input--style-1" type="text"
+                                                placeholder="Enter key" name="setting_right"
+                                                onkeydown="submitControl()">
+                                        </div>
+
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>
+                                            <div id="settings_snack_labal" class="input-type">
+                                            </div>
+                                        </h5>
+
+                                    </td>
+                                    <td>
+                                        <input style="margin-bottom: 30px;" type="range" onchange="set_snack_labal()"
+                                            id="setting_snacks" name="setting_snacks" min="50" max="90" value="70"
+                                            step="1">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>
+                                            <div class="input-type">
+                                                Number of monsters:
+                                            </div>
+                                        </h5>
+
+                                    </td>
+                                    <td>
+                                        <select id="setting_monsters_num" style="margin-bottom: 30px;"
+                                            name="setting_monsters_num">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="input-type">
+                                            <h5>Game time(seconds):</h5>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+                                        <div class="input-group">
+                                            <input id="setting_time" class="input--style-1" type="text"
+                                                placeholder="Minimum 60" name="setting_time">
+                                        </div>
+
+
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="p-t-20">
+                                <button class="btn btn--radius btn--green" type="button"
+                                    onclick="randomize_settings()">Randomize Settings</button>
                             </div>
                             <div class="p-t-20">
-                                <button class="btn btn--radius btn--green" type="button" onclick="set_settings()">Play!</button>
+                                <button class="btn btn--radius btn--green" type="button"
+                                    onclick="initialize_keys()">Restore Default Keys</button>
                             </div>
+                            <div class="p-t-20">
+                                <button class="btn btn--radius btn--green" type="button"
+                                    onclick="set_settings(setting_up,setting_down,setting_left,setting_right,setting_snacks,setting_time,setting_monsters_num)">Play!</button>
+                            </div>
+
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
-
 
 </body>
 
