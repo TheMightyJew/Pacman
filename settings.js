@@ -25,6 +25,8 @@ function initialize_keys(){
 }
 
 function randomize_settings(){
+    initialize_keys();
+
     var time = document.getElementById("setting_time");
     time.value = get_random_between(60, 60*5);
 
