@@ -22,6 +22,10 @@ var key_left;
 var key_right;
 var snacks_amount;
 var monsters_num;
+var color_5;
+var color_15;
+var color_25;
+var monsters;
 
 
 function Start() {
@@ -35,20 +39,35 @@ function Start() {
     mount_openning = false;
     var cnt = 100;
     var food_remain = snacks_amount;
+    var snack_5_remain=Math.round( 0.6*food_remain );
+    var snack_15_remain=Math.round( 0.3*food_remain );
+    var snack_25_remain=food_remain - snack_15_remain - snack_5_remain;
+    var monsters_remain=monsters_num;
     var pacman_remain = 1;
     start_time = new Date();
+    monsters=new Array();
+
     for (var i = 0; i < 10; i++) {
         board[i] = new Array();
-        //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
+        //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)       
         for (var j = 0; j < 10; j++) {
             if ((i === 3 && j === 3) || (i === 3 && j === 4) || (i === 3 && j === 5) || (i === 6 && j === 1) || (i === 6 && j === 2)) {
                 board[i][j] = 4;
             } else {
                 var randomNum = Math.random();
-                if (randomNum <= 1.0 * food_remain / cnt) {
-                    food_remain--;
-                    board[i][j] = 1;
-                } else if (randomNum < 1.0 * (pacman_remain + food_remain) / cnt) {
+                if (randomNum <= 1.0 * snack_5_remain / cnt) {
+                    snack_5_remain--;
+                    board[i][j] = 5;
+                } 
+                else if (randomNum <= 1.0 * (snack_5_remain+snack_15_remain) / cnt) {
+                    snack_15_remain--;
+                    board[i][j] = 15;
+                }
+                else if (randomNum <= 1.0 * (snack_5_remain+snack_15_remain+snack_25_remain) / cnt) {
+                    snack_25_remain--;
+                    board[i][j] = 25;
+                }
+                else if (randomNum < 1.0 * (pacman_remain + snack_5_remain+snack_15_remain+snack_25_remain) / cnt) {
                     shape.i = i;
                     shape.j = j;
                     pacman_remain--;
@@ -59,6 +78,17 @@ function Start() {
                 cnt--;
             }
         }
+    }
+    for(i=0;i<monsters_num;i++){
+        monsters[i]=new Object();
+        var randomX;
+        var randomY;
+        do {
+            randomX=Math.floor(Math.random()*10);
+            randomY=Math.floor(Math.random()*10);
+        } while (board[randomX][randomY]==2 || board[randomX][randomY]==4);
+        monsters[i].x=randomX;
+        monsters[i].y=randomY;
     }
     while (food_remain > 0) {
         var emptyCell = findRandomEmptyCell(board);
@@ -101,7 +131,7 @@ function ChangeMouth() {
     }
 }
 
-function set_settings(setting_up, setting_down, setting_left, setting_right, setting_snacks, setting_time, setting_monsters_num) {
+function set_settings(setting_up,setting_down,setting_left,setting_right,setting_snacks,settings_5_color,settings_15_color,settings_25_color,setting_time,setting_monsters_num){
     key_up = setting_up.value;
     key_down = setting_down.value;
     key_left = setting_left.value;
@@ -109,6 +139,9 @@ function set_settings(setting_up, setting_down, setting_left, setting_right, set
     game_time = setting_time.value;
     snacks_amount = setting_snacks.value;
     monsters_num = setting_monsters_num.value;
+    color_5 = settings_5_color;
+    color_15 = settings_15_color;
+    color_25 = settings_25_color;
     show_game();
     Start();
 }
@@ -159,8 +192,18 @@ function Draw() {
             }
         }
     }
+    Draw_monsters();
 
 
+}
+
+function Draw_monsters(){
+    for(i=0;i<monsters_num;i++){
+        var image=new image();
+        var pic_num=i+1;
+        image.src="ghost"+pic_num+".png";
+        context.drawImage(image,i*60,j*60);
+    }
 }
 
 function Draw_Pacman(direction, center) {

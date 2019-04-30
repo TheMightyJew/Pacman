@@ -32,6 +32,7 @@ function show_game() {
 }
 function show_settings() {
     show("settings")
+    initialize_settings();
 }
 
 function show(str) {
