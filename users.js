@@ -25,3 +25,12 @@ function check_login(login_username,login_password) {
         }
     }
 }
+
+function username_exists(username){
+    for(i=0;i<users_num;i++){
+        if(users[i].username === username){
+            return true;
+        }
+    }
+    return false;
+}

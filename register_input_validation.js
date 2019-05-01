@@ -1,4 +1,4 @@
-$().ready(function () {
+$(document ).ready(function () {
     $("#register_form").validate({
         rules: {
             username: {

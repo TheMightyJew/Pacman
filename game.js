@@ -10,7 +10,6 @@ var start_time;
 var time_remaining;
 var interval;
 var intervalKeyPressed;
-var interval_move_monsters;
 var lastPressed;
 var look_direction;
 var game_time;
@@ -34,10 +33,14 @@ var perfect_score;
 var update_counter;
 var colision_seconds;
 var image_boom;
+var colisions;
+var corners;
 
 
 function Start() {
     //Game.style.display = 'none';
+    set_corners();
+    colisions = 0;
     lastPressed = 0;
     look_direction = 4
     board = new Array();
@@ -59,7 +62,7 @@ function Start() {
     start_time = new Date();
     monsters = new Array();
 
-    update_counter = 0;
+    update_counter = 1;
     colision_seconds = 2;
     image_boom = new Image();
     image_boom.src = "explosion.png";
@@ -98,17 +101,11 @@ function Start() {
     }
     for (i = 0; i < monsters_num; i++) {
         monsters[i] = new Object();
-        var randomX;
-        var randomY;
-        do {
-            randomX = Math.floor(Math.random() * 10);
-            randomY = Math.floor(Math.random() * 10);
-        } while (board[randomX][randomY] == 2 || board[randomX][randomY] == 4);
-        monsters[i].x = randomX;
-        monsters[i].y = randomY;
         monsters[i].start = new Object();
-        monsters[i].start.x = randomX;
-        monsters[i].start.y = randomY;
+        monsters[i].start.x = corners[i].x;
+        monsters[i].start.y = corners[i].y;
+        monsters[i].x = monsters[i].start.x;
+        monsters[i].y = monsters[i].start.y;
         monsters[i].colision = null;
     }
     while (snack_5_remain > 0) {
@@ -136,7 +133,6 @@ function Start() {
     intervalKeyPressed = setInterval(GetKeyPressed, 10);
     interval = setInterval(UpdatePosition, 150);
     interval_mouth_openning = setInterval(ChangeMouth, 20);
-    //interval_move_monsters = setInterval(UpdateMonsterPositions,450);
 }
 
 
@@ -148,6 +144,23 @@ function findRandomEmptyCell(board) {
         j = Math.floor((Math.random() * 9) + 1);
     }
     return [i, j];
+}
+
+function set_corners(){
+    corners=new Array();
+    corners[0]=new Object()
+    corners[1]=new Object()
+    corners[2]=new Object()
+    corners[3]=new Object()
+    corners[0].x=0;
+    corners[0].y=0;
+    corners[1].x=0;
+    corners[1].y=9;
+    corners[2].x=9;
+    corners[2].y=0;
+    corners[3].x=9;
+    corners[3].y=9;
+
 }
 
 function ChangeMouth() {
@@ -202,14 +215,11 @@ function GetKeyPressed() {
 
 function Draw() {
     context.clearRect(0, 0, canvas.width, canvas.height); //clean board
-    lblScore.value = score + " Points";
-    lblTime.value = time_remaining + " Seconds";
+    lblScore.value =      "SCORE:       " + score + " Points";
+    lblTime.value =       "TIME:        " + time_remaining + " Seconds";
+    colisions_made.value= "COLISIONS:   " + colisions + " out of 3"
     for (var i = 0; i < 10; i++) {
         for (var j = 0; j < 10; j++) {
-            /*context.beginPath();
-            context.rect(center.x - 30, center.y - 30, 60, 60);
-            context.fillStyle = "black"; //color
-            context.fill();*/
             var center = new Object();
             center.x = i * 60 + 30;
             center.y = j * 60 + 30;
@@ -239,8 +249,6 @@ function Draw() {
         }
     }
     Draw_monsters();
-
-
 }
 
 function Draw_monsters() {
@@ -323,19 +331,24 @@ function UpdateMonsterPosition(i) {
             monsters[i].y = go_to.y;
         }
     }
-
-
     //Draw_monsters();
 }
 
 function Reset() {
-    window.clearInterval(interval);
-    window.clearInterval(intervalKeyPressed);
-    window.clearInterval(interval_mouth_openning);
-    //window.clearInterval(interval_move_monsters);
+    if(interval!=null){
+        window.clearInterval(interval);
+    }
+    if(intervalKeyPressed!=null){
+        window.clearInterval(intervalKeyPressed);
+    }
+    if(interval_mouth_openning!=null){
+        window.clearInterval(interval_mouth_openning);
+    }
+}
 
+function Restart(){
+    Reset();
     Start();
-
 }
 
 function CheckColision(x, y) {
@@ -346,6 +359,8 @@ function CheckColision(x, y) {
 }
 
 function HandleColision(monster) {
+    score -= 10;
+    colisions = Math.min(colisions+1,3);
     var t = new Date();
     if (monster.colision === null)
         monster.colision = new Object();
@@ -391,41 +406,55 @@ function UpdatePosition() {
     update_counter++;
 
     var currentTime = new Date();
-    time_remaining = Math.round(((start_time - currentTime) + game_time * 1000) / 1000);
-    if (score >= 20 && time_remaining <= 10) {
-        pac_color = "green";
-    }
-    //CheckColision(shape.i,shape.j);
+    time_remaining = Math.max(0, Math.round(((start_time - currentTime) + game_time * 1000) / 1000));
     Draw();
-    if (score === perfect_score) {
+    window.setTimeout(function(){check_EndGame();},0);
+    //check_EndGame();
+}
 
-        var time_spent = game_time - time_remaining;
-        window.alert("Game completed after " + time_spent + " seconds with " + score + " points!");
-
-        Reset();
+function check_EndGame() {
+    var time_spent = game_time - time_remaining;
+    if (colisions === 3) {
+        window.alert("You Lost! you survived only " + time_spent + " seconds!");
+        Restart();
     }
-
-    function Check_colisions_and_update_monsters(x, y) {
-        var updated = false;
-        for (i = 0; i < monsters_num; i++) {
-            if (monsters[i].x === shape.i && monsters[i].y === shape.j) {//edge conflict colision
-                if (update_counter % 3 === 0) {
-                    UpdateMonsterPosition(i);
-                    updated = true;
-                }
-                if (monsters[i].x === x && monsters[i].y === y) {
-                    HandleColision(monsters[i]);
-                }
-            }
-            if (update_counter % 3 === 0 && !updated) {
-                UpdateMonsterPosition(i);
-                updated=true;
-            }
-            if (monsters[i].x === shape.i && monsters[i].y === shape.j) {
-                HandleColision(monsters[i]);
-            }
-
-
+    else if (time_remaining === 0) {
+        if (score < 150) {
+            window.alert("You can do better, you earned only" + score + " points :(");
+            Restart();
+        }
+        else {
+            window.alert("We have a winner!!! you earned " + score + " points after " + time_spent + " seconds!");
+            Restart();
         }
     }
+    else if (score === (perfect_score-colisions*10)) {
+        window.alert("We have a winner!!! you earned " + score + " points after " + time_spent + " seconds!");
+        Restart();
+    }
 }
+function Check_colisions_and_update_monsters(x, y) {
+    var updated;
+    for (i = 0; i < monsters_num; i++) {
+        updated = false;
+        if (monsters[i].x === shape.i && monsters[i].y === shape.j) {//edge conflict colision
+            if (update_counter % 3 === 0) {
+                UpdateMonsterPosition(i);
+                updated = true;
+            }
+            if (monsters[i].x === x && monsters[i].y === y) {
+                HandleColision(monsters[i]);
+            }
+        }
+        if (update_counter % 3 === 0 && !updated) {
+            UpdateMonsterPosition(i);
+            updated = true;
+        }
+        if (monsters[i].x === shape.i && monsters[i].y === shape.j) {
+            HandleColision(monsters[i]);
+        }
+
+
+    }
+}
+

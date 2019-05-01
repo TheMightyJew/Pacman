@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <link rel="shortcut icon" type="image/png" href="icon.ico" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src=menu_script.js></script>
     <script type="text/javascript" src=register_input_validation.js></script>
@@ -14,7 +15,7 @@
     <meta name="keywords" content="Colorlib Templates">
 
     <!-- Title Page-->
-    <title>Au Register Forms by Colorlib</title>
+    <title>Pacman</title>
 
     <!-- Icons font CSS-->
     <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
@@ -40,295 +41,329 @@
     <script src="div_show.js"></script>
     <script src="users.js"></script>
     <script src="settings.js"></script>
+    <script src="modal.js"></script>
+    <link rel="stylesheet" type="text/css" href="modal_style.css" />
 
 </head>
 
 <body>
-    <ul id="menu">
-        <li><a id="welcome_ghost" onclick="show_welcome()"></a></li>
-        <li><a id="register_ghost" onclick="show_register()"></a></li>
-        <li><a id="login_ghost" onclick="show_login()"></a></li>
-        <li><a id="about_ghost" onclick="show_about()"></a></li>
-    </ul>
-    <div id="welcome">
-        <Button id="register_from_welcome" onclick="show_register()">
-        </Button>
-        <Button id="login_from_welcome" onclick="show_login()">
-        </Button>
-    </div>
-    <div id="Game">
-        SCORE:
-        <input id="lblScore" type="text" />
-        <br />
-        TIME:
-        <input id="lblTime" type="text" />
-        <br />
-        <canvas id="canvas" height="600" width="600">
-        </canvas>
-    </div>
-    <div class="basic_background" id="login">
-        <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
-            <div class="wrapper wrapper--w680">
-                <div class="card card-1">
-                    <div class="card-heading"></div>
-                    <div class="card-body">
-                        <h2 class="title">Login</h2>
-                        <form id="login_form" method="POST">
-                            <div class="input-group">
-                                <input class="input--style-1" type="text" placeholder="Username" name="login_username">
-                            </div>
-                            <div class="input-group">
-                                <input class="input--style-1" type="password" placeholder="Password"
-                                    name="login_password">
-                            </div>
-                            <div class="p-t-20">
-                                <button class="btn btn--radius btn--green" type="button"
-                                    onclick="check_login(login_username,login_password)">login!</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+    <header id="header">
+        <img src="icon.ico" width="50" height="50">
+        <img src="pacman_logo.png" width="200" height="50">
+        <img src="icon_left.png" width="50" height="50">
+
+        <h4 ><p><strong>Posted by:</strong>  Steven(209202126)  &  Rotem(208965814)<br><strong></h4>
+    </header>
+    <div id="body_content">
+        <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Steven Danishevski & Rotem Lev Lehman.<br>Some use of Jquery.</p>
             </div>
+    
         </div>
-    </div>
-    </div>
-    <div class="basic_background" id="register">
-        <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
-            <div class="wrapper wrapper--w680">
-                <div class="card card-1">
-                    <div class="card-heading"></div>
-                    <div class="card-body">
-                        <h2 class="title">Registration Info</h2>
-                        <form id="register_form" method="GET">
-                            <div class="input-group">
-                                <input class="input--style-1" type="text" placeholder="Username" name="username">
-                            </div>
-                            <div class="input-group">
-                                <input class="input--style-1" type="password" placeholder="Password" name="password">
-                            </div>
-                            <div class="row row-space">
+    
+        <ul id="menu">
+            <li><a id="welcome_ghost" onclick="show_welcome()"></a></li>
+            <li><a id="register_ghost" onclick="show_register()"></a></li>
+            <li><a id="login_ghost" onclick="show_login()"></a></li>
+            <li><a id="about_ghost"></a></li>
+        </ul>
+    
+        <div id="welcome">
+            <Button id="register_from_welcome" onclick="show_register()">
+            </Button>
+            <Button id="login_from_welcome" onclick="show_login()">
+            </Button>
+        </div>
+        <div id="Game">
+            <input id="lblScore" type="text" />
+            <br />
+            <input id="lblTime" type="text" />
+            <br />
+            <input id="colisions_made" type="text" />
+            <br />
+            <canvas id="canvas" height="600" width="600">
+            </canvas>
+        </div>
+        <div class="basic_background" id="login">
+            <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+                <div class="wrapper wrapper--w680">
+                    <div class="card card-1">
+                        <div class="card-heading"></div>
+                        <div class="card-body">
+                            <h2 class="title">Login</h2>
+                            <form id="login_form" method="get">
                                 <div class="input-group">
-                                    <input class="input--style-1" type="text" placeholder="First Name"
-                                        name="first_name">
+                                    <input class="input--style-1" type="text" placeholder="Username" name="login_username">
                                 </div>
                                 <div class="input-group">
-                                    <input class="input--style-1" type="text" placeholder="Last Name" name="last_name">
+                                    <input class="input--style-1" type="password" placeholder="Password"
+                                        name="login_password">
                                 </div>
-                            </div>
-                            <div class="row row-space">
-                                <div class="col-2">
-                                    <div class="input-group">
-                                        <input class="input--style-1" type="text" placeholder="Email" name="email">
-                                    </div>
+                                <div class="p-t-20">
+                                    <button class="btn btn--radius btn--green" type="button"
+                                        onclick="check_login(login_username,login_password)">login!</button>
                                 </div>
-                                <div class="col-2">
-                                    <div class="input-group">
-                                        <input class="input--style-1 js-datepicker" type="text" placeholder="BIRTHDATE"
-                                            name="birthday">
-                                        <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-t-20">
-                                <button class="btn btn--radius btn--green" type="button">Submit</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Jquery JS-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <!-- Vendor JS-->
-        <script src="vendor/select2/select2.min.js"></script>
-        <script src="vendor/datepicker/moment.min.js"></script>
-        <script src="vendor/datepicker/daterangepicker.js"></script>
-
-        <!-- Main JS-->
-        <script src="global.js"></script>
+        </div>
+        <div class="basic_background" id="register">
+            <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+                <div class="wrapper wrapper--w680">
+                    <div class="card card-1">
+                        <div class="card-heading"></div>
+                        <div class="card-body">
+                            <h2 class="title">Registration Info</h2>
+                            <form id="register_form" method="GET">
+                                <div class="input-group">
+                                    <input class="input--style-1" type="text" placeholder="Username" name="username">
+                                </div>
+                                <div class="input-group">
+                                    <input class="input--style-1" type="password" placeholder="Password" name="password">
+                                </div>
+                                <div class="row row-space">
+                                    <div class="input-group">
+                                        <input class="input--style-1" type="text" placeholder="First Name"
+                                            name="first_name">
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="input--style-1" type="text" placeholder="Last Name" name="last_name">
+                                    </div>
+                                </div>
+                                <div class="row row-space">
+                                    <div class="col-2">
+                                        <div class="input-group">
+                                            <input class="input--style-1" type="text" placeholder="Email" name="email">
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="input-group">
+                                            <input class="input--style-1 js-datepicker" type="text" placeholder="BIRTHDATE"
+                                                name="birthday">
+                                            <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-t-20">
+                                    <button class="btn btn--radius btn--green" type="button">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Jquery JS-->
+            <script src="vendor/jquery/jquery.min.js"></script>
+            <!-- Vendor JS-->
+            <script src="vendor/select2/select2.min.js"></script>
+            <script src="vendor/datepicker/moment.min.js"></script>
+            <script src="vendor/datepicker/daterangepicker.js"></script>
+    
+            <!-- Main JS-->
+            <script src="global.js"></script>
+        </div>
+        <div class="basic_background" id="settings">
+            <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
+                <div class="wrapper wrapper--w680">
+                    <div class="card card-1">
+                        <div class="card-heading"></div>
+                        <div class="card-body">
+                            <h2 class="title">Settings</h2>
+                            <form id="settings_form" method="GET">
+                                <table style="width:100%;height:100%;">
+                                    <tr>
+                                        <td>
+                                            <div class="input-type">
+                                                <h5>Control for moving up:</h5>
+                                            </div>
+    
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input id="setting_up" class="input--style-1" type="text"
+                                                    placeholder="Enter key" name="setting_up" onkeydown="submitControl()">
+                                            </div>
+    
+    
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-type">
+                                                <h5>Control for moving down:</h5>
+                                            </div>
+    
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input id="setting_down" class="input--style-1" type="text"
+                                                    placeholder="Enter key" name="setting_down" onkeydown="submitControl()">
+                                            </div>
+    
+    
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-type">
+                                                <h5>Control for moving left:</h5>
+                                            </div>
+    
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input id="setting_left" class="input--style-1" type="text"
+                                                    placeholder="Enter key" name="setting_left" onkeydown="submitControl()">
+                                            </div>
+    
+    
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-type">
+                                                <h5>Control for moving right:</h5>
+                                            </div>
+    
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input id="setting_right" class="input--style-1" type="text"
+                                                    placeholder="Enter key" name="setting_right"
+                                                    onkeydown="submitControl()">
+                                            </div>
+    
+    
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>
+                                                <div id="settings_snack_labal" class="input-type">
+                                                </div>
+                                            </h5>
+    
+                                        </td>
+                                        <td>
+                                            <input style="margin-bottom: 30px;" type="range" onchange="set_snack_labal()"
+                                                id="setting_snacks" name="setting_snacks" min="50" max="90" step="1">
+    
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>
+                                                <div class="input-type">
+                                                    Color of 5 points snacks:
+                                                </div>
+                                            </h5>
+    
+                                        </td>
+                                        <td>
+                                            <input id="setting_5_color" type="color" name="setting_5_color">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>
+                                                <div class="input-type">
+                                                    Color of 15 points snacks:
+                                                </div>
+                                            </h5>
+    
+                                        </td>
+                                        <td>
+                                            <input id="setting_15_color" type="color" name="setting_15_color">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>
+                                                <div class="input-type">
+                                                    Color of 25 points snacks:
+                                                </div>
+                                            </h5>
+    
+                                        </td>
+                                        <td>
+                                            <input id="setting_25_color" type="color" name="setting_25_color">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h5>
+                                                <div class="input-type">
+                                                    Number of monsters:
+                                                </div>
+                                            </h5>
+    
+                                        </td>
+                                        <td>
+                                            <select id="setting_monsters_num" style="margin-bottom: 30px;"
+                                                name="setting_monsters_num">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="input-type">
+                                                <h5>Game time(seconds):</h5>
+                                            </div>
+    
+                                        </td>
+    
+                                        <td>
+                                            <div class="input-group">
+                                                <input id="setting_time" class="input--style-1" type="text"
+                                                    placeholder="Minimum 60" name="setting_time">
+                                            </div>
+    
+    
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="p-t-20">
+                                    <button class="btn btn--radius btn--green" type="button"
+                                        onclick="randomize_settings()">Randomize Settings</button>
+                                </div>
+                                <div class="p-t-20">
+                                    <button class="btn btn--radius btn--green" type="reset">Reset</button>
+                                </div>
+                                <div class="p-t-20">
+                                    <button class="btn btn--radius btn--green" type="button"
+                                        onclick="set_settings(setting_up,setting_down,setting_left,setting_right,setting_snacks,setting_5_color,setting_15_color,setting_25_color,setting_time,setting_monsters_num)">Play!</button>
+                                </div>
+    
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div >
     </div>
-    <div class="basic_background" id="settings">
-        <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
-            <div class="wrapper wrapper--w680">
-                <div class="card card-1">
-                    <div class="card-heading"></div>
-                    <div class="card-body">
-                        <h2 class="title">Settings</h2>
-                        <form id="settings_form" method="GET">
-                            <table style="width:100%;height:100%;">
-                                <tr>
-                                    <td>
-                                        <div class="input-type">
-                                            <h5>Control for moving up:</h5>
-                                        </div>
+    
+    <footer id="footer">
+        <center>
+                <h4><p><strong>The Best Pacman Game!</strong><br><strong>information:</strong> <a
+                    href="mailto:stiven@post.bgu.ac.il"> stiven@post.bgu.ac.il</a>  /  <a
+                    href="mailto:levlerot@post.bgu.ac.il">levlerot@post.bgu.ac.il</a></p></h4>
+        </center>
 
-                                    </td>
-                                    <td>
-                                        <div class="input-group">
-                                            <input id="setting_up" class="input--style-1" type="text"
-                                                placeholder="Enter key" name="setting_up" onkeydown="submitControl()">
-                                        </div>
-
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="input-type">
-                                            <h5>Control for moving down:</h5>
-                                        </div>
-
-                                    </td>
-                                    <td>
-                                        <div class="input-group">
-                                            <input id="setting_down" class="input--style-1" type="text"
-                                                placeholder="Enter key" name="setting_down" onkeydown="submitControl()">
-                                        </div>
-
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="input-type">
-                                            <h5>Control for moving left:</h5>
-                                        </div>
-
-                                    </td>
-                                    <td>
-                                        <div class="input-group">
-                                            <input id="setting_left" class="input--style-1" type="text"
-                                                placeholder="Enter key" name="setting_left" onkeydown="submitControl()">
-                                        </div>
-
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="input-type">
-                                            <h5>Control for moving right:</h5>
-                                        </div>
-
-                                    </td>
-                                    <td>
-                                        <div class="input-group">
-                                            <input id="setting_right" class="input--style-1" type="text"
-                                                placeholder="Enter key" name="setting_right"
-                                                onkeydown="submitControl()">
-                                        </div>
-
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>
-                                            <div id="settings_snack_labal" class="input-type">
-                                            </div>
-                                        </h5>
-
-                                    </td>
-                                    <td>
-                                        <input style="margin-bottom: 30px;" type="range" onchange="set_snack_labal()"
-                                            id="setting_snacks" name="setting_snacks" min="50" max="90" step="1">
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>
-                                            <div class="input-type">
-                                                Color of 5 points snacks:
-                                            </div>
-                                        </h5>
-
-                                    </td>
-                                    <td>
-                                        <input id="setting_5_color" type="color" name="setting_5_color">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>
-                                            <div class="input-type">
-                                                Color of 15 points snacks:
-                                            </div>
-                                        </h5>
-
-                                    </td>
-                                    <td>
-                                        <input id="setting_15_color" type="color" name="setting_15_color">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>
-                                            <div class="input-type">
-                                                Color of 25 points snacks:
-                                            </div>
-                                        </h5>
-
-                                    </td>
-                                    <td>
-                                        <input id="setting_25_color" type="color" name="setting_25_color">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h5>
-                                            <div class="input-type">
-                                                Number of monsters:
-                                            </div>
-                                        </h5>
-
-                                    </td>
-                                    <td>
-                                        <select id="setting_monsters_num" style="margin-bottom: 30px;"
-                                            name="setting_monsters_num">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="input-type">
-                                            <h5>Game time(seconds):</h5>
-                                        </div>
-
-                                    </td>
-
-                                    <td>
-                                        <div class="input-group">
-                                            <input id="setting_time" class="input--style-1" type="text"
-                                                placeholder="Minimum 60" name="setting_time">
-                                        </div>
-
-
-                                    </td>
-                                </tr>
-                            </table>
-                            <div class="p-t-20">
-                                <button class="btn btn--radius btn--green" type="button"
-                                    onclick="randomize_settings()">Randomize Settings</button>
-                            </div>
-                            <div class="p-t-20">
-                                <button class="btn btn--radius btn--green" type="reset">Reset</button>
-                            </div>
-                            <div class="p-t-20">
-                                <button class="btn btn--radius btn--green" type="button"
-                                    onclick="set_settings(setting_up,setting_down,setting_left,setting_right,setting_snacks,setting_5_color,setting_15_color,setting_25_color,setting_time,setting_monsters_num)">Play!</button>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </footer>
 
 </body>
+
 
 </html>

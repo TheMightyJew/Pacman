@@ -36,6 +36,9 @@ function show_settings() {
 }
 
 function show(str) {
+    if(currently_shown === document.getElementById("Game")){
+        Reset();
+    }
     currently_shown.style = "display: none";
     currently_shown = document.getElementById(str);
     currently_shown.style = "display: block";
