@@ -10,6 +10,7 @@ var start_time;
 var time_remaining;
 var interval;
 var intervalKeyPressed;
+var interval_move_monsters;
 var lastPressed;
 var look_direction;
 var game_time;
@@ -30,6 +31,9 @@ var snack_5_amount;
 var snack_15_amount;
 var snack_25_amount;
 var perfect_score;
+var update_counter;
+var colision_seconds;
+var image_boom;
 
 
 function Start() {
@@ -54,6 +58,11 @@ function Start() {
     var pacman_remain = 1;
     start_time = new Date();
     monsters=new Array();
+
+    update_counter = 0;
+    colision_seconds = 2;
+    image_boom = new Image();
+    image_boom.src="explosion.png";
 
     for (var i = 0; i < 10; i++) {
         board[i] = new Array();
@@ -97,6 +106,10 @@ function Start() {
         } while (board[randomX][randomY]==2 || board[randomX][randomY]==4);
         monsters[i].x=randomX;
         monsters[i].y=randomY;
+        monsters[i].start = new Object();
+        monsters[i].start.x = randomX;
+        monsters[i].start.y = randomY;
+        monsters[i].colision = null;
     }
     while (snack_5_remain > 0) {
         var emptyCell = findRandomEmptyCell(board);
@@ -123,6 +136,7 @@ function Start() {
     intervalKeyPressed = setInterval(GetKeyPressed, 10);
     interval = setInterval(UpdatePosition, 150);
     interval_mouth_openning = setInterval(ChangeMouth, 20);
+    //interval_move_monsters = setInterval(UpdateMonstersPositions,450);
 }
 
 
@@ -235,6 +249,13 @@ function Draw_monsters(){
         var pic_num=i+1;
         image.src="ghost"+pic_num+".png";
         context.drawImage(image,monsters[i].x*60,monsters[i].y*60,60,60);
+        
+        if(monsters[i].colision !== null){
+            var now = new Date();
+            var time_diff = now - monsters[i].colision.time;
+            if(time_diff < 1000 * colision_seconds)
+                context.drawImage(image_boom,monsters[i].colision.x*60,monsters[i].colision.y*60,60,60);
+        }
     }
 }
 
@@ -277,23 +298,75 @@ function Draw_Pacman(direction, center) {
     context.fill();
 }
 
+function UpdateMonstersPositions(){
+    for(i=0;i<monsters_num;i++){
+
+        var distance=new Object();
+        distance.x=shape.i-monsters[i].x;
+        distance.y=shape.j-monsters[i].y;
+
+        var distance_direction=new Object();
+        distance_direction.x=distance.x/Math.abs(distance.x);
+        distance_direction.y=distance.y/Math.abs(distance.y);
+
+        var go_to=new Object();
+        go_to.x=monsters[i].x+distance_direction.x;
+        go_to.y=monsters[i].y+distance_direction.y;
+
+        var went=false;
+        if(shape.i!=monsters[i].x){
+            if(board[go_to.x][monsters[i].y]!=4){
+                monsters[i].x=go_to.x;
+                went=true;
+            }
+        }
+        if(shape.j!=monsters[i].y && !went){
+            if(board[monsters[i].x][go_to.y]!=4){
+                monsters[i].y=go_to.y;
+            }
+        }
+    }
+
+    //Draw_monsters();
+}
+
+function Reset(){
+    window.clearInterval(interval);
+    window.clearInterval(intervalKeyPressed);
+    window.clearInterval(interval_mouth_openning);
+    //window.clearInterval(interval_move_monsters);
+
+    Start();
+
+}
+
+function CheckColision(){
+    for(i=0;i<monsters_num;i++){
+        if(monsters[i].x === shape.i && monsters[i].y === shape.j)
+            HandleColision(monsters[i]);
+    }
+}
+
+function HandleColision(monster){
+    var t = new Date();
+    if(monster.colision === null)
+        monster.colision = new Object();
+    monster.colision.time = t;
+    monster.colision.x = monster.x;
+    monster.colision.y = monster.y;
+    monster.x = monster.start.x;
+    monster.y = monster.start.y;
+}
+
 function UpdatePosition() {
     board[shape.i][shape.j] = 0;
     var x = lastPressed;
-    /*for(i=0;i<monsters_num;i++){
-        if(shape.i!=monsters[i].x){
-            if(board[monsters[i].x+(shape.i-monsters[i].x)/(Math.abs(shape.i-monsters[i].x))][monsters[i].y]!=4){
-                monsters[i].x=monsters[i].x+(shape.i-monsters[i].x)/(Math.abs(shape.i-monsters[i].x));
-                monsters[i].y=monsters[i].y;
-            }
-        }
-        else if(shape.j!=monsters[i].y){
-            if(board[monsters[i].x][monsters[i].x+(shape.j-monsters[i].y)/(Math.abs(shape.j-monsters[y].x))]!=4){
-                monsters[i].y=monsters[i].y+(shape.j-monsters[i].y)/(Math.abs(shape.j-monsters[i].y));
-                monsters[i].x=monsters[i].x;
-            }
-        }
-    }*/
+
+    if(update_counter % 3 === 0)
+        UpdateMonstersPositions();
+    
+    update_counter++;
+    
     if (x === 1) {
         if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4) {
             shape.j--;
@@ -323,13 +396,13 @@ function UpdatePosition() {
     if (score >= 20 && time_remaining <= 10) {
         pac_color = "green";
     }
+    CheckColision();
     Draw();
     if (score === perfect_score) {
-        window.clearInterval(interval);
-        window.clearInterval(intervalKeyPressed);
-        window.clearInterval(interval_mouth_openning);
+        
         var time_spent = game_time - time_remaining;
         window.alert("Game completed after " + time_spent + " seconds with " + score + " points!");
-        Start();
+
+        Reset();
     }
 }
