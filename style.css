@@ -12,9 +12,9 @@ ul#menu {
     margin: 0px;
     padding: 0px;
     top: 0px;
-    left: 25%;
+    left: 30%;
     list-style: none;
-    z-index:999999;
+    z-index:600;
 }
 ul#menu li {
     display:inline;
@@ -73,7 +73,7 @@ ul#menu li a {
 }
 
 #register_from_welcome {
-    margin-top: 25%;
+    margin-top: 20%;
     background-image: url("register_icon.png");
 }
 
@@ -87,7 +87,7 @@ ul#menu li a {
 }
 
 #footer {
-    background-color: aquamarine;
+    background-color: cornflowerblue;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -95,15 +95,38 @@ ul#menu li a {
 }
 
 #header {
-    background-color: aquamarine;
+    background-color: cornflowerblue;
     position: sticky;
     position: fixed;
     top: 0;
     width: 100%;
     height: 75px;
+    z-index: 500;
 }
 
 #body_content{
     margin-top: 75px;
+    margin-bottom: 50px;
 }
+
+#game_data{
+    float:left;
+    position: absolute;
+    top: 45%;
+    left: 10%;
+    border: black;
+}
+
+#game_canvas{
+    overflow: hidden;
+    top: 50%;
+}
+
+#canvas{
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+}
+
+
 

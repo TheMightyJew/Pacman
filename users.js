@@ -34,3 +34,7 @@ function username_exists(username){
     }
     return false;
 }
+
+function get_current_username(){
+    return users[logged_in_user].username;
+}

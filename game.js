@@ -1,8 +1,14 @@
 var context;
+var shape;
+var strawberry;
+
 document.addEventListener('DOMContentLoaded', function (event) {
     context = canvas.getContext("2d");
+    shape = new Object();
+    strawberry = new Object();
 });
-var shape = new Object();
+
+
 var board;
 var score;
 var pac_color;
@@ -33,13 +39,16 @@ var perfect_score;
 var update_counter;
 var colision_seconds;
 var image_boom;
+var image_strawberry;
 var colisions;
 var corners;
+var square_side_size;
 
 
 function Start() {
     //Game.style.display = 'none';
     set_corners();
+    square_side_size = canvas.height / 10;
     colisions = 0;
     lastPressed = 0;
     look_direction = 4
@@ -56,7 +65,7 @@ function Start() {
     snack_5_amount = snack_5_remain;
     snack_15_amount = snack_15_remain;
     snack_25_amount = snack_25_remain;
-    perfect_score = Number(snack_5_amount) * 5 + Number(snack_15_remain) * 15 + Number(snack_25_amount) * 25;
+    perfect_score = Number(snack_5_amount) * 5 + Number(snack_15_remain) * 15 + Number(snack_25_amount) * 25 + 50;
     var monsters_remain = monsters_num;
     var pacman_remain = 1;
     start_time = new Date();
@@ -66,6 +75,8 @@ function Start() {
     colision_seconds = 2;
     image_boom = new Image();
     image_boom.src = "explosion.png";
+    image_strawberry = new Image();
+    image_strawberry.src = "strawberry.png";
 
     for (var i = 0; i < 10; i++) {
         board[i] = new Array();
@@ -87,7 +98,7 @@ function Start() {
                     snack_25_remain--;
                     board[i][j] = 25;
                 }
-                else if (randomNum < 1.0 * (pacman_remain + snack_5_remain + snack_15_remain + snack_25_remain) / cnt) {
+                else if (i != 0 && j != 0 && i != 9 && j != 9 && randomNum < 1.0 * (pacman_remain + snack_5_remain + snack_15_remain + snack_25_remain) / cnt) {
                     shape.i = i;
                     shape.j = j;
                     pacman_remain--;
@@ -108,6 +119,9 @@ function Start() {
         monsters[i].y = monsters[i].start.y;
         monsters[i].colision = null;
     }
+    strawberry.x = corners[3].x;
+    strawberry.y = corners[3].y;
+    strawberry.eatten = false;
     while (snack_5_remain > 0) {
         var emptyCell = findRandomEmptyCell(board);
         board[emptyCell[0]][emptyCell[1]] = 5;
@@ -146,20 +160,20 @@ function findRandomEmptyCell(board) {
     return [i, j];
 }
 
-function set_corners(){
-    corners=new Array();
-    corners[0]=new Object()
-    corners[1]=new Object()
-    corners[2]=new Object()
-    corners[3]=new Object()
-    corners[0].x=0;
-    corners[0].y=0;
-    corners[1].x=0;
-    corners[1].y=9;
-    corners[2].x=9;
-    corners[2].y=0;
-    corners[3].x=9;
-    corners[3].y=9;
+function set_corners() {
+    corners = new Array();
+    corners[0] = new Object()
+    corners[1] = new Object()
+    corners[2] = new Object()
+    corners[3] = new Object()
+    corners[0].x = 0;
+    corners[0].y = 0;
+    corners[1].x = 0;
+    corners[1].y = 9;
+    corners[2].x = 9;
+    corners[2].y = 0;
+    corners[3].x = 9;
+    corners[3].y = 9;
 
 }
 
@@ -215,40 +229,49 @@ function GetKeyPressed() {
 
 function Draw() {
     context.clearRect(0, 0, canvas.width, canvas.height); //clean board
-    lblScore.value =      "SCORE:       " + score + " Points";
-    lblTime.value =       "TIME:        " + time_remaining + " Seconds";
-    colisions_made.value= "COLISIONS:   " + colisions + " out of 3"
+    game_username.value = "Username:    " + get_current_username();
+    lblScore.value = "SCORE:       " + score + " Points";
+    lblTime.value = "TIME:        " + time_remaining + " Seconds";
+    colisions_made.value = "COLISIONS:   " + colisions + " out of 3";
     for (var i = 0; i < 10; i++) {
         for (var j = 0; j < 10; j++) {
             var center = new Object();
-            center.x = i * 60 + 30;
-            center.y = j * 60 + 30;
+            center.x = i * square_side_size + (square_side_size * 0.5);
+            center.y = j * square_side_size + (square_side_size * 0.5);
             if (board[i][j] === 2) {
                 Draw_Pacman(look_direction, center);
             } else if (board[i][j] === 5) {
                 context.beginPath();
-                context.arc(center.x, center.y, 5, 0, 2 * Math.PI); // circle
+                context.arc(center.x, center.y, square_side_size / 12, 0, 2 * Math.PI); // circle
                 context.fillStyle = color_5.value; //color
                 context.fill();
             } else if (board[i][j] === 15) {
                 context.beginPath();
-                context.arc(center.x, center.y, 10, 0, 2 * Math.PI); // circle
+                context.arc(center.x, center.y, square_side_size / 6, 0, 2 * Math.PI); // circle
                 context.fillStyle = color_15.value; //color
                 context.fill();
             } else if (board[i][j] === 25) {
                 context.beginPath();
-                context.arc(center.x, center.y, 18, 0, 2 * Math.PI); // circle
+                context.arc(center.x, center.y, square_side_size * 0.3, 0, 2 * Math.PI); // circle
                 context.fillStyle = color_25.value; //color
                 context.fill();
             } else if (board[i][j] === 4) {
                 context.beginPath();
-                context.rect(center.x - 30, center.y - 30, 60, 60);
+                context.rect(center.x - (square_side_size * 0.5), center.y - (square_side_size * 0.5), square_side_size, square_side_size);
                 context.fillStyle = "blue"; //color
                 context.fill();
             }
         }
     }
+    Draw_Strawberry();
     Draw_monsters();
+}
+
+function Draw_Strawberry() {
+    if (strawberry.eatten === false) {
+        context.drawImage(image_strawberry, strawberry.x * square_side_size, strawberry.y * square_side_size, square_side_size, square_side_size);
+
+    }
 }
 
 function Draw_monsters() {
@@ -256,13 +279,13 @@ function Draw_monsters() {
         var image = new Image();
         var pic_num = i + 1;
         image.src = "ghost" + pic_num + ".png";
-        context.drawImage(image, monsters[i].x * 60, monsters[i].y * 60, 60, 60);
+        context.drawImage(image, monsters[i].x * square_side_size, monsters[i].y * square_side_size, square_side_size, square_side_size);
 
         if (monsters[i].colision !== null) {
             var now = new Date();
             var time_diff = now - monsters[i].colision.time;
             if (time_diff < 1000 * colision_seconds)
-                context.drawImage(image_boom, monsters[i].colision.x * 60, monsters[i].colision.y * 60, 60, 60);
+                context.drawImage(image_boom, monsters[i].colision.x * square_side_size, monsters[i].colision.y * square_side_size, square_side_size, square_side_size);
         }
     }
 }
@@ -275,78 +298,78 @@ function Draw_Pacman(direction, center) {
 
     switch (direction) {
         case 1:
-            eye_x = -15;
-            eye_y = -5;
+            eye_x = -square_side_size / 4;
+            eye_y = -square_side_size / 12;
             mouth_loc = 1.5;
             break;
         case 2:
-            eye_x = -15;
-            eye_y = +5;
+            eye_x = -square_side_size / 4;
+            eye_y = +square_side_size / 12;
             mouth_loc = 0.5;
             break;
         case 3:
-            eye_x = -5;
-            eye_y = -15;
+            eye_x = -square_side_size / 12;
+            eye_y = -square_side_size / 4;
             mouth_loc = 1;
             break;
         case 4:
-            eye_x = +5;
-            eye_y = -15;
+            eye_x = +square_side_size / 12;
+            eye_y = -square_side_size / 4;
             mouth_loc = 0;
             break;
 
     }
-    context.arc(center.x, center.y, 30, (mouth_loc + mouth_diff) * Math.PI, (mouth_loc - mouth_diff) * Math.PI); // half circle
+    context.arc(center.x, center.y, (square_side_size * 0.5), (mouth_loc + mouth_diff) * Math.PI, (mouth_loc - mouth_diff) * Math.PI); // half circle
     context.lineTo(center.x, center.y);
     context.fillStyle = pac_color; //color
     context.fill();
     context.beginPath();
-    context.arc(center.x + eye_x, center.y + eye_y, 5, 0, 2 * Math.PI); // circle
+    context.arc(center.x + eye_x, center.y + eye_y, square_side_size / 12, 0, 2 * Math.PI); // circle
     context.fillStyle = "black"; //color
     context.fill();
 }
 
-function UpdateMonsterPosition(i) {
+function UpdateMonsterPosition(monster) {
     var distance = new Object();
-    distance.x = shape.i - monsters[i].x;
-    distance.y = shape.j - monsters[i].y;
+    distance.x = shape.i - monster.x;
+    distance.y = shape.j - monster.y;
 
     var distance_direction = new Object();
     distance_direction.x = distance.x / Math.abs(distance.x);
     distance_direction.y = distance.y / Math.abs(distance.y);
 
     var go_to = new Object();
-    go_to.x = monsters[i].x + distance_direction.x;
-    go_to.y = monsters[i].y + distance_direction.y;
+    go_to.x = monster.x + distance_direction.x;
+    go_to.y = monster.y + distance_direction.y;
 
     var went = false;
-    if (shape.i != monsters[i].x) {
-        if (board[go_to.x][monsters[i].y] != 4) {
-            monsters[i].x = go_to.x;
+    if (shape.i != monster.x) {
+        if (board[go_to.x][monster.y] != 4) {
+            monster.x = go_to.x;
             went = true;
         }
     }
-    if (shape.j != monsters[i].y && !went) {
-        if (board[monsters[i].x][go_to.y] != 4) {
-            monsters[i].y = go_to.y;
+    if (shape.j != monster.y && !went) {
+        if (board[monster.x][go_to.y] != 4) {
+            monster.y = go_to.y;
         }
     }
     //Draw_monsters();
 }
 
 function Reset() {
-    if(interval!=null){
+    if (interval != null) {
         window.clearInterval(interval);
     }
-    if(intervalKeyPressed!=null){
+    if (intervalKeyPressed != null) {
         window.clearInterval(intervalKeyPressed);
     }
-    if(interval_mouth_openning!=null){
+    if (interval_mouth_openning != null) {
         window.clearInterval(interval_mouth_openning);
     }
 }
 
-function Restart(){
+function Restart() {
     Reset();
     Start();
 }
@@ -360,7 +383,7 @@ function CheckColision(x, y) {
 
 function HandleColision(monster) {
     score -= 10;
-    colisions = Math.min(colisions+1,3);
+    colisions = Math.min(colisions + 1, 3);
     var t = new Date();
     if (monster.colision === null)
         monster.colision = new Object();
@@ -374,8 +397,8 @@ function HandleColision(monster) {
 function UpdatePosition() {
     board[shape.i][shape.j] = 0;
     var x = lastPressed;
-    var xx = shape.i;
-    var yy = shape.j;
+    var old_x = shape.i;
+    var old_y = shape.j;
     if (x === 1) {
         if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4) {
             shape.j--;
@@ -396,20 +419,64 @@ function UpdatePosition() {
             shape.i++;
         }
     }
+
     if (board[shape.i][shape.j] === 5 || board[shape.i][shape.j] === 15 || board[shape.i][shape.j] === 25) {
         score += board[shape.i][shape.j];
     }
     board[shape.i][shape.j] = 2;
 
-    Check_colisions_and_update_monsters(xx, yy);
+    for (i = 0; i < monsters_num; i++) {
+        Check_colisions_and_update_someone(old_x, old_y, HandleColision, UpdateMonsterPosition, monsters[i]);
+    }
+    if (strawberry.eatten === false)
+        Check_colisions_and_update_someone(old_x, old_y, handle_strawberry_colision, update_Strawberry_position, strawberry);
 
     update_counter++;
 
     var currentTime = new Date();
     time_remaining = Math.max(0, Math.round(((start_time - currentTime) + game_time * 1000) / 1000));
+
     Draw();
-    window.setTimeout(function(){check_EndGame();},0);
+    window.setTimeout(function () { check_EndGame(); }, 0);
     //check_EndGame();
+}
+
+function handle_strawberry_colision(strawberry) {
+    strawberry.eatten = true;
+    score += 50;
+}
+
+function update_Strawberry_position(strawberry) {
+    if (update_counter % 3 === 0) {
+        var direction;
+        var new_x = strawberry.x;
+        var new_y = strawberry.y;
+        do {
+            direction = Math.floor(Math.random() * 4);
+            switch (direction) {
+                case 0:
+                    new_y--;
+                    break;
+                case 1:
+                    new_y++;
+                    break;
+                case 2:
+                    new_x--;
+                    break;
+                case 3:
+                    new_x++;
+                    break;
+            }
+        } while (!in_board(new_x) || !in_board(new_y) || board[new_x][new_y] == 4);
+        strawberry.x = new_x;
+        strawberry.y = new_y;
+    }
+}
+
+function in_board(num) {
+    if (num >= 0 && num <= 9)
+        return true;
+    return false;
 }
 
 function check_EndGame() {
@@ -428,33 +495,33 @@ function check_EndGame() {
             Restart();
         }
     }
-    else if (score === (perfect_score-colisions*10)) {
+    else if (score === (perfect_score - colisions * 10)) {
         window.alert("We have a winner!!! you earned " + score + " points after " + time_spent + " seconds!");
         Restart();
     }
 }
-function Check_colisions_and_update_monsters(x, y) {
+
+
+function Check_colisions_and_update_someone(x, y, handle, update_position, someone) {
     var updated;
-    for (i = 0; i < monsters_num; i++) {
-        updated = false;
-        if (monsters[i].x === shape.i && monsters[i].y === shape.j) {//edge conflict colision
-            if (update_counter % 3 === 0) {
-                UpdateMonsterPosition(i);
-                updated = true;
-            }
-            if (monsters[i].x === x && monsters[i].y === y) {
-                HandleColision(monsters[i]);
-            }
-        }
-        if (update_counter % 3 === 0 && !updated) {
-            UpdateMonsterPosition(i);
+    updated = false;
+    if (someone.x === shape.i && someone.y === shape.j) {
+        if (update_counter % 3 === 0) {
+            update_position(someone);
             updated = true;
         }
-        if (monsters[i].x === shape.i && monsters[i].y === shape.j) {
-            HandleColision(monsters[i]);
+        if (someone.x === x && someone.y === y) {
+            handle(someone);
         }
-
-
     }
+    if (update_counter % 3 === 0 && !updated) {
+        update_position(someone);
+        updated = true;
+    }
+    if (someone.x === shape.i && someone.y === shape.j) {
+        handle(someone);
+    }
+
 }
+
 
