@@ -110,6 +110,20 @@ function Start() {
             }
         }
     }
+    if (pacman_remain === 1) {
+        for (var i = 0; i < 10; i++) {
+            for (var j = 0; j < 10; j++) {
+                if (board[i][j] === 0) {
+                    shape.i = i;
+                    shape.j = j;
+                    pacman_remain--;
+                    board[i][j] = 2;
+                    break;
+                }
+            }
+        }
+    }
+
     for (i = 0; i < monsters_num; i++) {
         monsters[i] = new Object();
         monsters[i].start = new Object();
