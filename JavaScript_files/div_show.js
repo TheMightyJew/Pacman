@@ -18,20 +18,21 @@ function display_none(str) {
     curr.style = "display: none";
 }
 function show_welcome() {
-    show("welcome")
+    show("welcome");
 }
 function show_register() {
-    show("register")
+    show("register");
+    register_check();
 }
 
 function show_login() {
-    show("login")
+    show("login");
 }
 function show_game() {
-    show("Game")
+    show("Game");
 }
 function show_settings() {
-    show("settings")
+    show("settings");
     initialize_settings();
 }
 

@@ -4,9 +4,8 @@
 <head>
     <link rel="shortcut icon" type="image/png" href="icon.ico" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script type="text/javascript" src=menu_script.js></script>
-    <script type="text/javascript" src=register_input_validation.js></script>
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src=JavaScript_files/menu_script.js> </script> <link rel="stylesheet" type="text/css"
+        href="style.css" />
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -32,19 +31,26 @@
     <link href="main.css" rel="stylesheet" media="all">
 
     <!-- Signup validation -->
-    <!--<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+    <!--<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="http://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="http://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+    <script src="dist/jquery.validate.js"></script>-->
 
-    <script src="dist/jquery.validate.js"></script>
-    <script src="register_input_validation.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <script src="JavaScript_files/jquery.js"></script>
+
+    <script src="JavaScript_files/register_input_validation.js"></script>
+
 
     <!-- Our scripts-->
-    <script src="game.js"></script>
-    <script src="div_show.js"></script>
-    <script src="users.js"></script>
-    <script src="settings.js"></script>
-    <script src="modal.js"></script>
+    <script src="JavaScript_files/game.js"></script>
+    <script src="JavaScript_files/div_show.js"></script>
+    <script src="JavaScript_files/users.js"></script>
+    <script src="JavaScript_files/settings.js"></script>
+    <script src="JavaScript_files/modal.js"></script>
     <link rel="stylesheet" type="text/css" href="modal_style.css" />
 
 </head>
@@ -89,16 +95,16 @@
 
         <div id="Game">
             <div id="game_data">
-                    <input id="game_username" type="text" />
-                    <br />
-                    <input id="lblScore" type="text" />
-                    <br />
-                    <input id="lblTime" type="text" />
-                    <br />
-                    <input id="colisions_made" type="text" />
-                    <br />
+                <input id="game_username" type="text" />
+                <br />
+                <input id="lblScore" type="text" />
+                <br />
+                <input id="lblTime" type="text" />
+                <br />
+                <input id="colisions_made" type="text" />
+                <br />
             </div>
-            
+
             <center id="game_canvas">
                 <canvas id="canvas" height="520" width="520">
                 </canvas>
@@ -121,11 +127,11 @@
                                 </div>
                                 <div class="input-group">
                                     <input class="input--style-1" type="password" placeholder="Password"
-                                        name="login_password">
+                                        name="login_password" >
                                 </div>
                                 <div class="p-t-20">
                                     <button class="btn btn--radius btn--green" type="button"
-                                        onclick="check_login(login_username,login_password)">login!</button>
+                                        onclick="check_login()">login!</button>
                                 </div>
                             </form>
                         </div>
@@ -141,38 +147,38 @@
                     <div class="card-heading"></div>
                     <div class="card-body">
                         <h2 class="title">Registration Info</h2>
-                        <form id="register_form" method="GET">
+                        <form id="register_form" name="register_form" action="javascript:register()">
                             <div class="input-group">
-                                <input class="input--style-1" type="text" placeholder="Username" name="username">
+                                <input class="input--style-1" type="text" placeholder="Username" name="register_username">
                             </div>
                             <div class="input-group">
-                                <input class="input--style-1" type="password" placeholder="Password" name="password">
+                                <input class="input--style-1" type="password" placeholder="Password" name="register_password">
                             </div>
                             <div class="row row-space">
                                 <div class="input-group">
                                     <input class="input--style-1" type="text" placeholder="First Name"
-                                        name="first_name">
+                                        name="register_first_name">
                                 </div>
                                 <div class="input-group">
-                                    <input class="input--style-1" type="text" placeholder="Last Name" name="last_name">
+                                    <input class="input--style-1" type="text" placeholder="Last Name" name="register_last_name">
                                 </div>
                             </div>
                             <div class="row row-space">
                                 <div class="col-2">
                                     <div class="input-group">
-                                        <input class="input--style-1" type="text" placeholder="Email" name="email">
+                                        <input class="input--style-1" type="text" placeholder="Email" name="register_email">
                                     </div>
                                 </div>
                                 <div class="col-2">
                                     <div class="input-group">
                                         <input class="input--style-1 js-datepicker" type="text" placeholder="BIRTHDATE"
-                                            name="birthday">
+                                            name="register_birthday">
                                         <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="p-t-20">
-                                <button class="btn btn--radius btn--green" type="button">Submit</button>
+                                <input class="btn btn--radius btn--green" type="submit" value="Sign Up" />
                             </div>
                         </form>
                     </div>
@@ -188,7 +194,7 @@
         <script src="vendor/datepicker/daterangepicker.js"></script>
 
         <!-- Main JS-->
-        <script src="global.js"></script>
+        <script src="JavaScript_files/global.js"></script>
     </div>
     <div class="basic_background" id="settings">
         <div class="page-wrapper bg-blue p-t-100 p-b-100 font-robo">
