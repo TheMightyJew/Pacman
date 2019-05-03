@@ -109,6 +109,7 @@ function Start() {
             }
         }
     }
+
     for (i = 0; i < monsters_num; i++) {
         monsters[i] = new Object();
         monsters[i].start = new Object();
@@ -136,6 +137,20 @@ function Start() {
         board[emptyCell[0]][emptyCell[1]] = 25;
         snack_25_remain--;
     }
+
+    if (pacman_remain === 1) {
+        for (var i = 0; i < 10 && pacman_remain === 1; i++) {
+            for (var j = 0; j < 10 && pacman_remain === 1; j++) {
+                if (board[i][j] === 0 && !isCorner(i,j)) {
+                    shape.i = i;
+                    shape.j = j;
+                    pacman_remain--;
+                    board[i][j] = 2;
+                }
+            }
+        }
+    }
+
     keysDown = {};
     addEventListener("keydown", function (e) {
         keysDown[e.code] = true;
@@ -148,13 +163,31 @@ function Start() {
     interval_mouth_openning = setInterval(ChangeMouth, 20);
 }
 
+function isCorner(i,j){
+    for(var k = 0; k < 4; k++){
+        if(corners[k].x === i && corners[k].y === j)
+            return true;
+    }
+    return false;
+}
 
 function findRandomEmptyCell(board) {
+    var trials = 10;
     var i = Math.floor((Math.random() * 9) + 1);
     var j = Math.floor((Math.random() * 9) + 1);
-    while (board[i][j] !== 0) {
+    while (board[i][j] !== 0 && trials > 0) {
         i = Math.floor((Math.random() * 9) + 1);
         j = Math.floor((Math.random() * 9) + 1);
+        trials--;
+    }
+    if(board[i][j] !== 0){
+        for (i = 0; i < 10; i++) {
+            for (j = 0; j < 10; j++) {
+                if (board[i][j] === 0) {
+                    return [i, j];
+                }
+            }
+        }
     }
     return [i, j];
 }
@@ -448,25 +481,49 @@ function handle_strawberry_colision(strawberry) {
 function update_Strawberry_position(strawberry) {
     if (update_counter % 3 === 0) {
         var direction;
-        var new_x = strawberry.x;
-        var new_y = strawberry.y;
+        var trials = 10;
+        var new_x;
+        var new_y;
         do {
+            new_x = strawberry.x;
+            new_y = strawberry.y;
             direction = Math.floor(Math.random() * 4);
             switch (direction) {
                 case 0:
-                    new_y--;
+                    new_y = strawberry.y - 1;
                     break;
                 case 1:
-                    new_y++;
+                    new_y = strawberry.y + 1;
                     break;
                 case 2:
-                    new_x--;
+                    new_x = strawberry.x - 1;
                     break;
                 case 3:
-                    new_x++;
+                    new_x = strawberry.x + 1;
                     break;
             }
-        } while (!in_board(new_x) || !in_board(new_y) || board[new_x][new_y] == 4);
+            trials--;
+        } while ((!in_board(new_x) || !in_board(new_y) || board[new_x][new_y] == 4) && trials > 0);
+        if(!in_board(new_x) || !in_board(new_y) || board[new_x][new_y] == 4){
+            new_x = strawberry.x + 1;
+            new_y = strawberry.y;
+            if(!in_board(new_x) || !in_board(new_y) || board[new_x][new_y] == 4){
+                new_x = strawberry.x - 1;
+                new_y = strawberry.y;
+                if(!in_board(new_x) || !in_board(new_y) || board[new_x][new_y] == 4){
+                    new_x = strawberry.x;
+                    new_y = strawberry.y + 1;
+                    if(!in_board(new_x) || !in_board(new_y) || board[new_x][new_y] == 4){
+                        new_x = strawberry.x;
+                        new_y = strawberry.y - 1;
+                        if(!in_board(new_x) || !in_board(new_y) || board[new_x][new_y] == 4){
+                            return;
+                            //no where to go...
+                        }
+                    }
+                }
+            }
+        }
         strawberry.x = new_x;
         strawberry.y = new_y;
     }
