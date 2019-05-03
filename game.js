@@ -77,7 +77,6 @@ function Start() {
     image_boom.src = "explosion.png";
     image_strawberry = new Image();
     image_strawberry.src = "strawberry.png";
-
     for (var i = 0; i < 10; i++) {
         board[i] = new Array();
         //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)       
