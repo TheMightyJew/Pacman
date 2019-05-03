@@ -222,7 +222,7 @@ function ChangeMouth() {
     }
 }
 
-function set_settings(setting_up, setting_down, setting_left, setting_right, setting_snacks, settings_5_color, settings_15_color, settings_25_color, setting_time, setting_monsters_num) {
+function set_game_settings(setting_up, setting_down, setting_left, setting_right, setting_snacks, settings_5_color, settings_15_color, settings_25_color, setting_time, setting_monsters_num) {
     key_up = setting_up.value;
     key_down = setting_down.value;
     key_left = setting_left.value;

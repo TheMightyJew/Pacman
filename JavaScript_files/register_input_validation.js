@@ -1,40 +1,73 @@
-/*$(document ).ready(function () {
-    $("#register_form").validate({
-        rules: {
-            username: {
-                required: true,
+function register_check() {
+    $(function () {
+        $("form[name='register_form']").validate({
+            // Specify validation rules
+            rules: {
+                register_username: {
+                    required: true,
+                },
+                register_password: {
+                    required: true,
+                    minlength: 8,
+                    contains_letter: true,
+                    contains_digit: true
+                },
+                register_first_name: {
+                    required: true,
+                    not_contains_digit: true
+    
+                },
+                register_last_name: {
+                    required: true,
+                    not_contains_digit: true
+    
+                },
+                register_email: {
+                    required: true,
+                    email: true
+                },
+                register_birthday: {
+                    required: true,
+                }
             },
-            password: {
-                required: true,
-                minlength: 8,
-                contains_letter: true,
-                contains_digit: true
+            messages: {
+                username:{
+                    required: "Please enter a username",
+                },
+                register_password: {
+                    required: "Please enter a password",
+                    minlength: "Length must be at least 8",
+                    contains_letter: "Must include at least one letter",
+                    contains_digit: "Must include at least one digit",
+                },
+                register_first_name: {
+                    required: "Please enter a first name",
+                    contains_digit: "Must not contain a digit"
+    
+                },
+                register_last_name: {
+                    required: "Please enter a last name",
+                    contains_digit: "Must not contain a digit"
+    
+                },
+                register_email: {
+                    required: "Please enter an email address",
+                    email: "Insert a valid email address"
+                },
+                register_birthday: {
+                    required: "Please enter a birthday date",
+                }
             },
-            first_name: {
-                required: true,
-                contains_digit: false
-
-            },
-            last_name: {
-                required: true,
-                contains_digit: false
-
-            },
-            email: {
-                required: true,
-                email: true
-            },
-            birthday: {
-                required: true,
+            // Make sure the form is submitted to the destination defined
+            // in the "action" attribute of the form when valid
+            submitHandler: function (form) {
+                form.submit();
             }
-        },
-        messages: {
-            username:{
-                required: "Please enter a username"
-            }
-        }
-    })
-})
+        });
+    });
+}
+
+
 $(function () {
     function validateContainsLetter(value, element, param) {
         if (/[A-Za-z]/.test(value)) {
@@ -49,76 +82,22 @@ $(function () {
     function validateContainsDigit(value, element, param) {
 
         if (/\d/.test(value)) {
-            return param;
+            return true;
         }
         else {
-            return !param;
+            return false;
         }
     }
-    jQuery.validator.addMethod("contains_digit", validateContainsDigit, "Please select an option");
-})*/
+    jQuery.validator.addMethod("contains_digit", validateContainsDigit,"Must not contain a digit");
 
+    function validateNotContainsDigit(value, element, param) {
 
-
-
-
-
-
-function register_check() {
-    window.clearInterval(interval);
-    /*$('#wrapper').children().hide();
-    $('#register').show();
-    $.validator.addMethod("pwchecked", function (value) {
-        return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
-            && /[A-Za-z]/.test(value) // has a lowercase letter
-            && /\d/.test(value) // has a digit
-    });
-    $.validator.addMethod("myemail", function (value) {
-        return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(value);
-    });*/
-    $(function () {
-        // Initialize form validation on the registration form.
-        // It has the name attribute "registration"
-        $("form[name='register_form']").validate({
-            // Specify validation rules
-            rules: {
-                username: {
-                    required: true,
-                },
-                password: {
-                    required: true,
-                    minlength: 8,
-                    contains_letter: true,
-                    contains_digit: true
-                },
-                first_name: {
-                    required: true,
-                    contains_digit: false
-    
-                },
-                last_name: {
-                    required: true,
-                    contains_digit: false
-    
-                },
-                email: {
-                    required: true,
-                    email: true
-                },
-                birthday: {
-                    required: true,
-                }
-            },
-            messages: {
-                username:{
-                    required: "Please enter a username"
-                }
-            },
-            // Make sure the form is submitted to the destination defined
-            // in the "action" attribute of the form when valid
-            submitHandler: function (form) {
-                form.submit();
-            }
-        });
-    });
-}
+        if (/\d/.test(value)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    jQuery.validator.addMethod("not_contains_digit", validateNotContainsDigit,"Must not contain a digit");
+})

@@ -40,9 +40,11 @@
 
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-    <script src="JavaScript_files/jquery.js"></script>
+    <!--<script src="JavaScript_files/jquery.js"></script>-->
 
     <script src="JavaScript_files/register_input_validation.js"></script>
+    <script src="JavaScript_files/settings_input_validation.js"></script>
+
 
 
     <!-- Our scripts-->
@@ -186,8 +188,8 @@
             </div>
         </div>
 
-        <!-- Jquery JS-->
-        <script src="vendor/jquery/jquery.min.js"></script>
+        <!-- Jquery JS
+        <script src="vendor/jquery/jquery.min.js"></script>-->
         <!-- Vendor JS-->
         <script src="vendor/select2/select2.min.js"></script>
         <script src="vendor/datepicker/moment.min.js"></script>
@@ -203,7 +205,7 @@
                     <div class="card-heading"></div>
                     <div class="card-body">
                         <h2 class="title">Settings</h2>
-                        <form id="settings_form" method="GET">
+                        <form id="settings_form" name="settings_form" action="javascript:set_settings()">
                             <table style="width:100%;height:100%;">
                                 <tr>
                                     <td>
@@ -214,8 +216,8 @@
                                     </td>
                                     <td>
                                         <div class="input-group">
-                                            <input id="setting_up" class="input--style-1" type="text"
-                                                placeholder="Enter key" name="setting_up" onkeydown="submitControl()">
+                                            <input id="settings_up" class="input--style-1" type="text"
+                                                placeholder="Enter key" name="settings_up" onkeydown="submitControl()">
                                         </div>
 
 
@@ -230,8 +232,8 @@
                                     </td>
                                     <td>
                                         <div class="input-group">
-                                            <input id="setting_down" class="input--style-1" type="text"
-                                                placeholder="Enter key" name="setting_down" onkeydown="submitControl()">
+                                            <input id="settings_down" class="input--style-1" type="text"
+                                                placeholder="Enter key" name="settings_down" onkeydown="submitControl()">
                                         </div>
 
 
@@ -246,8 +248,8 @@
                                     </td>
                                     <td>
                                         <div class="input-group">
-                                            <input id="setting_left" class="input--style-1" type="text"
-                                                placeholder="Enter key" name="setting_left" onkeydown="submitControl()">
+                                            <input id="settings_left" class="input--style-1" type="text"
+                                                placeholder="Enter key" name="settings_left" onkeydown="submitControl()">
                                         </div>
 
 
@@ -262,8 +264,8 @@
                                     </td>
                                     <td>
                                         <div class="input-group">
-                                            <input id="setting_right" class="input--style-1" type="text"
-                                                placeholder="Enter key" name="setting_right"
+                                            <input id="settings_right" class="input--style-1" type="text"
+                                                placeholder="Enter key" name="settings_right"
                                                 onkeydown="submitControl()">
                                         </div>
 
@@ -280,7 +282,7 @@
                                     </td>
                                     <td>
                                         <input style="margin-bottom: 30px;" type="range" onchange="set_snack_labal()"
-                                            id="setting_snacks" name="setting_snacks" min="50" max="90" step="1">
+                                            id="settings_snacks_quantity" name="settings_snacks_quantity" min="50" max="90" step="1">
 
                                     </td>
                                 </tr>
@@ -294,7 +296,7 @@
 
                                     </td>
                                     <td>
-                                        <input id="setting_5_color" type="color" name="setting_5_color">
+                                        <input id="settings_snack_5_color" type="color" name="settings_snack_5_color">
                                     </td>
                                 </tr>
                                 <tr>
@@ -307,7 +309,7 @@
 
                                     </td>
                                     <td>
-                                        <input id="setting_15_color" type="color" name="setting_15_color">
+                                        <input id="settings_snack_15_color" type="color" name="settings_snack_15_color">
                                     </td>
                                 </tr>
                                 <tr>
@@ -320,7 +322,7 @@
 
                                     </td>
                                     <td>
-                                        <input id="setting_25_color" type="color" name="setting_25_color">
+                                        <input id="settings_snack_25_color" type="color" name="settings_snack_25_color">
                                     </td>
                                 </tr>
                                 <tr>
@@ -333,8 +335,8 @@
 
                                     </td>
                                     <td>
-                                        <select id="setting_monsters_num" style="margin-bottom: 30px;"
-                                            name="setting_monsters_num">
+                                        <select id="settings_monsters_num" style="margin-bottom: 30px;"
+                                            name="settings_monsters_num">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
@@ -351,11 +353,9 @@
 
                                     <td>
                                         <div class="input-group">
-                                            <input id="setting_time" class="input--style-1" type="text"
-                                                placeholder="Minimum 60" name="setting_time">
+                                            <input id="settings_game_time" class="input--style-1" type="text"
+                                                placeholder="Minimum 60" name="settings_game_time">
                                         </div>
-
-
                                     </td>
                                 </tr>
                             </table>
@@ -367,8 +367,7 @@
                                 <button class="btn btn--radius btn--green" type="reset">Reset</button>
                             </div>
                             <div class="p-t-20">
-                                <button class="btn btn--radius btn--green" type="button"
-                                    onclick="set_settings(setting_up,setting_down,setting_left,setting_right,setting_snacks,setting_5_color,setting_15_color,setting_25_color,setting_time,setting_monsters_num)">Play!</button>
+                                <input class="btn btn--radius btn--green" type="submit" value="Play!" />
                             </div>
 
                         </form>

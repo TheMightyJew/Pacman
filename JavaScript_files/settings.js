@@ -1,9 +1,33 @@
+var settings_left;
+var settings_right;
+var settings_up;
+var settings_down;
+var settings_snacks_quantity;
+var settings_snack_5_color;
+var settings_snack_15_color;
+var settings_snack_25_color;
+var settings_monsters_num;
+var settings_game_time;
+
 document.addEventListener('DOMContentLoaded', function (event) {
+    settings_left = document.getElementsByName("settings_left")[0];
+    settings_right = document.getElementsByName("settings_right")[0];
+    settings_up = document.getElementsByName("settings_up")[0];
+    settings_down = document.getElementsByName("settings_down")[0];
+    settings_snacks_quantity = document.getElementsByName("settings_snacks_quantity")[0];
+    settings_snack_5_color = document.getElementsByName("settings_snack_5_color")[0];
+    settings_snack_15_color = document.getElementsByName("settings_snack_15_color")[0];
+    settings_snack_25_color = document.getElementsByName("settings_snack_25_color")[0];
+    settings_monsters_num = document.getElementsByName("settings_monsters_num")[0];
+    settings_game_time = document.getElementsByName("settings_game_time")[0];
+
     set_snack_labal();
-    //randomize_settings();
-    //initialize_keys();
     initialize_settings();
 });
+
+function set_settings(){
+    set_game_settings(setting_up, setting_down, setting_left, setting_right, settings_snacks_quantity, settings_snack_5_color, settings_snack_15_color, settings_snack_25_color, settings_game_time, settings_monsters_num);
+}
 
 function submitControl() {
     event.srcElement.value = event.code;
@@ -11,50 +35,36 @@ function submitControl() {
 }
 function set_snack_labal() {
     var snacks = document.getElementById("settings_snack_labal");
-    snacks.textContent = "Snacks quantity: " + document.getElementById("setting_snacks").value;
+    snacks.textContent = "Snacks quantity: " + settings_snacks_quantity.value;
 }
 
 function initialize_settings() {
-    var up = document.getElementById("setting_up");
-    up.value = null;
-    var down = document.getElementById("setting_down");
-    down.value = null;
-    var left = document.getElementById("setting_left");
-    left.value = null;
-    var right = document.getElementById("setting_right");
-    right.value = null;
+    settings_left.value = null;
+    settings_right.value = null;
+    settings_up.value = null; 
+    settings_down.value = null;   
 
-    var time = document.getElementById("setting_time");
-    time.value = null;
+    settings_game_time.value = null;
 
-    var snacks = document.getElementById("setting_snacks");
-    snacks.value = 70;
+    settings_snacks_quantity.value = 70;
     set_snack_labal();
 
-    var monsters = document.getElementById("setting_monsters_num");
-    monsters.value = 2;
+    settings_monsters_num.value = 2;
 
-    var color_5 = document.getElementById("setting_5_color");
-    color_5.value = "#ff0000";
+    settings_snack_5_color.value = "#ff0000";
 
-    var color_15 = document.getElementById("setting_15_color");
-    color_15.value = "#27AE60";
+    settings_snack_15_color.value = "#27AE60";
 
-    var color_25 = document.getElementById("setting_25_color");
-    color_25.value = "#F1C40F";
+    settings_snack_25_color.value = "#F1C40F";
 
 
 }
 
 function initialize_keys() {
-    var up = document.getElementById("setting_up");
-    up.value = "ArrowUp";
-    var down = document.getElementById("setting_down");
-    down.value = "ArrowDown";
-    var left = document.getElementById("setting_left");
-    left.value = "ArrowLeft";
-    var right = document.getElementById("setting_right");
-    right.value = "ArrowRight";
+    settings_up.value = "ArrowUp";
+    settings_down.value = "ArrowDown";
+    settings_left.value = "ArrowLeft";
+    settings_right.value = "ArrowRight";
 }
 
 function randomize_settings() {
@@ -70,13 +80,8 @@ function randomize_settings() {
     var monsters = document.getElementById("setting_monsters_num");
     monsters.value = get_random_between(1, 3);
 
-    var color_5 = document.getElementById("setting_5_color");
     color_5.value = getRandomColor();
-
-    var color_15 = document.getElementById("setting_15_color");
     color_15.value = getRandomColor();
-
-    var color_25 = document.getElementById("setting_25_color");
     color_25.value = getRandomColor();
 }
 
