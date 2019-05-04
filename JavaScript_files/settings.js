@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 });
 
 function set_settings(){
-    set_game_settings(setting_up, setting_down, setting_left, setting_right, settings_snacks_quantity, settings_snack_5_color, settings_snack_15_color, settings_snack_25_color, settings_game_time, settings_monsters_num);
+    set_game_settings(settings_up, settings_down, settings_left, settings_right, settings_snacks_quantity, settings_snack_5_color, settings_snack_15_color, settings_snack_25_color, settings_game_time, settings_monsters_num);
 }
 
 function submitControl() {
@@ -69,7 +69,18 @@ function initialize_keys() {
 
 function randomize_settings() {
     initialize_keys();
+    settings_game_time.value = get_random_between(60, 60*5);
 
+    settings_snacks_quantity.value = get_random_between(50, 90);
+    set_snack_labal();
+
+    settings_monsters_num.value = get_random_between(1, 3);
+
+    settings_snack_5_color.value = getRandomColor();
+    settings_snack_15_color.value = getRandomColor();
+    settings_snack_25_color.value = getRandomColor();
+
+    /*
     var time = document.getElementById("setting_time");
     time.value = get_random_between(60, 60 * 5);
 
@@ -83,6 +94,7 @@ function randomize_settings() {
     color_5.value = getRandomColor();
     color_15.value = getRandomColor();
     color_25.value = getRandomColor();
+    */
 }
 
 function get_random_between(min_val, max_val) {

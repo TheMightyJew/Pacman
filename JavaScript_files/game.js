@@ -539,21 +539,21 @@ function check_EndGame() {
     var time_spent = game_time - time_remaining;
     if (colisions === 3) {
         window.alert("You Lost! you survived only " + time_spent + " seconds!");
-        Restart();
+        Reset();
     }
     else if (time_remaining === 0) {
         if (score < 150) {
             window.alert("You can do better, you earned only" + score + " points :(");
-            Restart();
+            Reset();
         }
         else {
             window.alert("We have a winner!!! you earned " + score + " points after " + time_spent + " seconds!");
-            Restart();
+            Reset();
         }
     }
     else if (score === (perfect_score - colisions * 10)) {
         window.alert("We have a winner!!! you earned " + score + " points after " + time_spent + " seconds!");
-        Restart();
+        Reset();
     }
 }
 
