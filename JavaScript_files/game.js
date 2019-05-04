@@ -453,6 +453,9 @@ function PlacePacmanInARandomSpot(){
                     board[shape.i][shape.j] = 0;
                     shape.i = i;
                     shape.j = j;
+
+                    if(board[shape.i][shape.j] === 5 || board[shape.i][shape.j] === 15 || board[shape.i][shape.j] === 25)
+                        score += board[shape.i][shape.j];
                     board[shape.i][shape.j] = 2;
                     return;
                 }
@@ -463,6 +466,9 @@ function PlacePacmanInARandomSpot(){
         board[shape.i][shape.j] = 0;
         shape.i = i;
         shape.j = j;
+
+        if(board[shape.i][shape.j] === 5 || board[shape.i][shape.j] === 15 || board[shape.i][shape.j] === 25)
+            score += board[shape.i][shape.j];
         board[shape.i][shape.j] = 2;
     }
 }
