@@ -16,19 +16,19 @@ function settings_check() {
             rules: {
                 settings_left: {
                     required: true,
-                    different_Buttons: true
+                    differentButtonsLeft: true
                 },
                 settings_right: {
                     required: true,
-                    different_Buttons: true
+                    differentButtonsRight: true
                 },
                 settings_up: {
                     required: true,
-                    different_Buttons: true
+                    differentButtonsUp: true
                 },
                 settings_down: {
                     required: true,
-                    different_Buttons: true
+                    differentButtonsDown: true
                 },
                 settings_snacks_quantity: {
                     required: true,
@@ -107,17 +107,41 @@ $(function () {
     }
     jQuery.validator.addMethod("higher_60", validateHigher60, "Game must be at least 60 seconds");
 
-    function differentButtons(value, element, param) {
+    function differentButtonsLeft(value, element, param) {
         var pair1 = $('#settings_left').val() != $('#settings_up').val();
         var pair2 = $('#settings_left').val() != $('#settings_down').val();
         var pair3 = $('#settings_left').val() != $('#settings_right').val();
-        var pair4 = $('#settings_right').val() != $('#settings_up').val();
-        var pair5 = $('#settings_right').val() != $('#settings_down').val();
-        var pair6 = $('#settings_up').val() != $('#settings_down').val();
-        return (pair1 && pair2 && pair3 && pair4 && pair5 && pair6);
+        return (pair1 && pair2 && pair3);
 
     }
-    jQuery.validator.addMethod("different_Buttons", differentButtons, "All move buttons must be different from each others");
+    jQuery.validator.addMethod("differentButtonsLeft", differentButtonsLeft, "All move buttons must be different from each others");
+
+    function differentButtonsRight(value, element, param) {
+        var pair1 = $('#settings_left').val() != $('#settings_right').val();
+        var pair2 = $('#settings_right').val() != $('#settings_up').val();
+        var pair3 = $('#settings_right').val() != $('#settings_down').val();
+        return (pair1 && pair2 && pair3);
+
+    }
+    jQuery.validator.addMethod("differentButtonsRight", differentButtonsRight, "All move buttons must be different from each others");
+
+    function differentButtonsUp(value, element, param) {
+        var pair1 = $('#settings_left').val() != $('#settings_up').val();
+        var pair2 = $('#settings_right').val() != $('#settings_up').val();
+        var pair3 = $('#settings_up').val() != $('#settings_down').val();
+        return (pair1 && pair2 && pair3);
+
+    }
+    jQuery.validator.addMethod("differentButtonsUp", differentButtonsUp, "All move buttons must be different from each others");
+
+    function differentButtonsDown(value, element, param) {
+        var pair1 = $('#settings_left').val() != $('#settings_down').val();
+        var pair2 = $('#settings_right').val() != $('#settings_down').val();
+        var pair3 = $('#settings_up').val() != $('#settings_down').val();
+        return (pair1 && pair2 && pair3);
+
+    }
+    jQuery.validator.addMethod("differentButtonsDown", differentButtonsDown, "All move buttons must be different from each others");
 
     function differentColors(value, element, param) {
         var pair1 = $('#settings_snack_5_color').val() != $('#settings_snack_15_color').val();
