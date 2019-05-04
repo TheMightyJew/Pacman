@@ -39,13 +39,18 @@ function add_user(user){
 }
 
 function check_login() {
+    var success = false;
     for(i=0;i<users_num;i++){
         if(users[i].username === login_username.value && users[i].password === login_password.value){
-            reset_login(login_username,login_password);
+            //reset_login(login_username,login_password);
+            reset_login();
             login(users[i]);
+            success = true;
             break;
         }
     }
+    if(!success)
+        window.alert("Username or password are not valid, please register before logging in");
 }
 
 function login(user){
@@ -77,7 +82,10 @@ function register(){
     user.password= register_password.value;
     reset_register();
     add_user(user);
-    login(user);
+
+    window.alert("Successfully registered!");
+    show_login();
+    //login(user);
 }
 
 function reset_register(){

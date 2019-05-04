@@ -39,25 +39,25 @@ ul#menu li a {
 }
 
 #welcome_ghost {
-    background: transparent url(ghost_welcome.png) no-repeat bottom right;
+    background: transparent url("../images/ghost_welcome.png") no-repeat bottom right;
 }
 
 #register_ghost {
-    background: transparent url(ghost_register.png) no-repeat bottom right;
+    background: transparent url("../images/ghost_register.png") no-repeat bottom right;
 }
 
 #login_ghost {
-    background: transparent url(ghost_login.png) no-repeat bottom right;
+    background: transparent url("../images/ghost_login.png") no-repeat bottom right;
 }
 
 #about_ghost {
-    background: transparent url(ghost_about.png) no-repeat bottom right;
+    background: transparent url("../images/ghost_about.png") no-repeat bottom right;
 }
 
 #welcome {
     width: 100%;
     height: calc(100vw * 0.625);
-    background-image: url("pixels_pacman_logo.jpg");
+    background-image: url("../images/pixels_pacman_logo.jpg");
     background-size: 100% 100%;
 }
 
@@ -74,15 +74,15 @@ ul#menu li a {
 
 #register_from_welcome {
     margin-top: 20%;
-    background-image: url("register_icon.png");
+    background-image: url("../images/register_icon.png");
 }
 
 #login_from_welcome {
     margin-top: 35%;
-    background-image: url("login_icon.png");
+    background-image: url("../images/login_icon.png");
 }
 .basic_background{
-    background-image: url("divs_background.jpg");
+    background-image: url("../images/divs_background.jpg");
     background-size: 100% 100%;
 }
 
@@ -123,7 +123,7 @@ ul#menu li a {
     height: 60px;
     background-size: 140px 60px;
     overflow: auto;
-    background-image: url("reset.png");
+    background-image: url("../images/reset.png");
 }
 
 #game_canvas{

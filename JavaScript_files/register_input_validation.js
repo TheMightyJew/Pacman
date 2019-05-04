@@ -5,6 +5,7 @@ function register_check() {
             rules: {
                 register_username: {
                     required: true,
+                    unique_username: true
                 },
                 register_password: {
                     required: true,
@@ -100,4 +101,9 @@ $(function () {
         }
     }
     jQuery.validator.addMethod("not_contains_digit", validateNotContainsDigit,"Must not contain a digit");
+
+    function validateUniqueUsername(value, element, param) {
+        return !username_exists(value);
+    }
+    jQuery.validator.addMethod("unique_username", validateUniqueUsername,"This username is already taken, please pick a different username");
 })

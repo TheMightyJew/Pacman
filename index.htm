@@ -2,10 +2,10 @@
 <html>
 
 <head>
-    <link rel="shortcut icon" type="image/png" href="icon.ico" />
+    <link rel="shortcut icon" type="image/png" href="images/icon.ico" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src=JavaScript_files/menu_script.js> </script> <link rel="stylesheet" type="text/css"
-        href="style.css" />
+        href="css_files/style.css" />
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,7 +28,7 @@
     <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
 
     <!-- Main CSS-->
-    <link href="main.css" rel="stylesheet" media="all">
+    <link href="css_files/main.css" rel="stylesheet" media="all">
 
     <!-- Signup validation -->
     <!--<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -53,15 +53,15 @@
     <script src="JavaScript_files/users.js"></script>
     <script src="JavaScript_files/settings.js"></script>
     <script src="JavaScript_files/modal.js"></script>
-    <link rel="stylesheet" type="text/css" href="modal_style.css" />
+    <link rel="stylesheet" type="text/css" href="css_files/modal_style.css" />
 
 </head>
 
 <body>
     <header id="header">
-        <img src="icon.ico" width="50" height="50">
-        <img src="pacman_logo.png" width="200" height="50">
-        <img src="icon_left.png" width="50" height="50">
+        <img src="images/icon.ico" width="50" height="50">
+        <img src="images/pacman_logo.png" width="200" height="50">
+        <img src="images/icon_left.png" width="50" height="50">
 
         <h4>
             <p><strong>Posted by:</strong> Steven(209202126) & Rotem(208965814)<br><strong>
@@ -367,7 +367,7 @@
                                     onclick="randomize_settings()">Randomize Settings</button>
                             </div>
                             <div class="p-t-20">
-                                <button class="btn btn--radius btn--green" type="reset">Reset</button>
+                                <button class="btn btn--radius btn--green" type="button" onclick="initialize_settings()">Reset</button>
                             </div>
                             <div class="p-t-20">
                                 <input class="btn btn--radius btn--green" type="submit" value="Play!" />

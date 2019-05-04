@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     strawberry = new Object();
 });
 
-
+var myAudio = new Audio('music/PacMan Original Theme.mp3');;
 var board;
 var score;
 var pac_color;
@@ -74,9 +74,9 @@ function Start() {
     update_counter = 1;
     colision_seconds = 2;
     image_boom = new Image();
-    image_boom.src = "explosion.png";
+    image_boom.src = "images/explosion.png";
     image_strawberry = new Image();
-    image_strawberry.src = "strawberry.png";
+    image_strawberry.src = "images/strawberry.png";
     for (var i = 0; i < 10; i++) {
         board[i] = new Array();
         //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)       
@@ -161,6 +161,12 @@ function Start() {
     intervalKeyPressed = setInterval(GetKeyPressed, 10);
     interval = setInterval(UpdatePosition, 150);
     interval_mouth_openning = setInterval(ChangeMouth, 20);
+ 
+    myAudio.addEventListener('ended', function() {
+    this.currentTime = 0;
+    this.play();
+    }, false);
+    myAudio.play();
 }
 
 function isCorner(i,j){
@@ -310,7 +316,7 @@ function Draw_monsters() {
     for (i = 0; i < monsters_num; i++) {
         var image = new Image();
         var pic_num = i + 1;
-        image.src = "ghost" + pic_num + ".png";
+        image.src = "images/ghost" + pic_num + ".png";
         context.drawImage(image, monsters[i].x * square_side_size, monsters[i].y * square_side_size, square_side_size, square_side_size);
 
         if (monsters[i].colision !== null) {
@@ -399,6 +405,9 @@ function Reset() {
     if (interval_mouth_openning != null) {
         window.clearInterval(interval_mouth_openning);
     }
+
+    myAudio.pause();
+    myAudio.currentTime = 0;
 }
 
 function Restart() {
@@ -424,6 +433,48 @@ function HandleColision(monster) {
     monster.colision.y = monster.y;
     monster.x = monster.start.x;
     monster.y = monster.start.y;
+
+    PlacePacmanInARandomSpot();
+}
+
+function PlacePacmanInARandomSpot(){
+    var trials = 10;
+    var i = Math.floor(Math.random() * 10);
+    var j = Math.floor(Math.random() * 10);
+    while (!GoodSpotForPacman(i,j) && trials > 0) {
+        i = Math.floor(Math.random() * 10);
+        j = Math.floor(Math.random() * 10);
+        trials--;
+    }
+    if(!GoodSpotForPacman(i,j)){
+        for (i = 0; i < 10; i++) {
+            for (j = 0; j < 10; j++) {
+                if (GoodSpotForPacman(i,j)) {
+                    board[shape.i][shape.j] = 0;
+                    shape.i = i;
+                    shape.j = j;
+                    board[shape.i][shape.j] = 2;
+                    return;
+                }
+            }
+        }
+    }
+    else{
+        board[shape.i][shape.j] = 0;
+        shape.i = i;
+        shape.j = j;
+        board[shape.i][shape.j] = 2;
+    }
+}
+
+function GoodSpotForPacman(i,j){
+    for(var k = 0; k < monsters_num; k++){
+        if(monsters[k].x === i && monsters[k].y === j)
+            return false;
+    }
+    if(board[i][j] === 4 || isCorner(i,j))
+        return false;
+    return true;
 }
 
 function UpdatePosition() {
